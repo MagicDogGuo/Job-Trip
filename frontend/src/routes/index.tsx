@@ -1,0 +1,89 @@
+import React, { lazy, Suspense } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { CircularProgress, Box } from '@mui/material';
+
+// 布局
+import Layout from '@/components/layout/Layout';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
+
+// 懒加载组件
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
+const JobsPage = lazy(() => import('@/pages/JobsPage'));
+const JobDetailPage = lazy(() => import('@/pages/JobDetailPage'));
+const JobFormPage = lazy(() => import('@/pages/JobFormPage'));
+const JobApplicationForm = lazy(() => import('@/pages/JobApplicationForm'));
+const StatsPage = lazy(() => import('@/pages/StatsPage'));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
+const LoginPage = lazy(() => import('@/pages/auth/LoginPage'));
+const RegisterPage = lazy(() => import('@/pages/auth/RegisterPage'));
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
+
+// 加载指示器
+const LoadingFallback = () => (
+  <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    }}
+  >
+    <CircularProgress />
+  </Box>
+);
+
+// 包装带布局的路由
+const LayoutRoute = ({ element }: { element: React.ReactNode }) => (
+  <Layout>{element}</Layout>
+);
+
+// 包装需要认证的路由
+const ProtectedLayoutRoute = ({ element }: { element: React.ReactNode }) => (
+  <ProtectedRoute>
+    <Layout>{element}</Layout>
+  </ProtectedRoute>
+);
+
+/**
+ * 应用程序路由配置组件
+ */
+const AppRoutes = () => {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <Routes>
+        {/* 公开路由 */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        
+        {/* 带布局的公开路由 */}
+        <Route path="/" element={<LayoutRoute element={<HomePage />} />} />
+        
+        {/* 需要认证的路由 */}
+        <Route path="/dashboard" element={<ProtectedLayoutRoute element={<DashboardPage />} />} />
+        
+        {/* 职位相关路由 */}
+        <Route path="/jobs" element={<ProtectedLayoutRoute element={<JobsPage />} />} />
+        <Route path="/jobs/new" element={<ProtectedLayoutRoute element={<JobFormPage />} />} />
+        <Route path="/jobs/edit/:id" element={<ProtectedLayoutRoute element={<JobFormPage />} />} />
+        <Route path="/jobs/:id" element={<ProtectedLayoutRoute element={<JobDetailPage />} />} />
+        
+        {/* 申请跟踪相关路由 */}
+        <Route path="/application/new" element={<ProtectedLayoutRoute element={<JobApplicationForm />} />} />
+        <Route path="/application/edit/:id" element={<ProtectedLayoutRoute element={<JobApplicationForm />} />} />
+        
+        {/* 其他应用路由 */}
+        <Route path="/stats" element={<ProtectedLayoutRoute element={<StatsPage />} />} />
+        <Route path="/profile" element={<ProtectedLayoutRoute element={<ProfilePage />} />} />
+        
+        {/* 404页面 */}
+        <Route path="/404" element={<LayoutRoute element={<NotFoundPage />} />} />
+        
+        {/* 重定向到404 */}
+        <Route path="*" element={<Navigate to="/404" replace />} />
+      </Routes>
+    </Suspense>
+  );
+};
+
+export default AppRoutes; 
