@@ -9,6 +9,8 @@
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "dev:http": "node scripts/dev-server.js",
     "dev:https": "node scripts/https-server.js",
+    "check-resources": "node scripts/check-resources.js",
+    "predev": "npm run check-resources",
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "generate-docs": "node scripts/generate-redoc.js",

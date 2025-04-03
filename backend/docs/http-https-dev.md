@@ -33,6 +33,58 @@ npm run dev:http
 2. 添加了路由直接从node_modules提供Swagger UI的资源
 3. 修改了Swagger UI的配置，确保使用相对路径
 
+### ReDoc配置
+
+同样，为了解决ReDoc的HTTPS问题，我们做了以下修改：
+
+1. 修改了HTML模板中的资源引用，使用相对路径而不是绝对URL
+2. 为ReDoc文档页面和JS资源添加了专用中间件
+3. 设置了正确的内容类型和缓存控制头信息
+4. 为ReDoc配置了适当的CSP，允许使用blob URL和Web Worker
+5. 添加了HTML meta标签指定CSP，确保前端一致性
+
+### CSP (内容安全策略) 配置
+
+为了允许ReDoc正常工作，我们对CSP做了如下配置：
+
+1. 添加了`script-src 'unsafe-eval' blob:`，允许动态执行脚本和使用blob URL
+2. 添加了`worker-src blob:`，允许使用blob URL创建Web Worker
+3. 在多个中间件中保持CSP一致，防止资源被阻止
+4. 在HTML中添加了meta标签声明CSP，确保浏览器端一致
+
+CSP配置示例：
+```
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'
+```
+
+#### ReDoc和Web Worker问题
+
+ReDoc使用Web Worker来提高性能，但必须通过blob URL加载这些Worker。如果CSP策略限制了blob URL或Web Worker，会出现如下错误：
+
+```
+SecurityError: Failed to construct 'Worker': Access to the script at 'blob:http://...' is denied by the document's Content Security Policy.
+```
+
+解决方案：
+1. 在CSP中添加`worker-src blob:`
+2. 在CSP中添加`script-src blob:`
+3. 使用CSP帮助函数确保所有中间件和HTML设置一致的策略
+
+### 资源自动检查
+
+为确保所有必要的前端资源都可用，我们添加了资源检查脚本：
+
+```bash
+# 手动检查和下载必要资源
+npm run check-resources
+```
+
+此脚本会自动：
+1. 检查资源文件（如ReDoc的JS文件）是否存在
+2. 如果不存在，尝试从CDN下载
+3. 如果下载失败，尝试使用npm安装并复制文件
+4. 所有dev命令都会自动运行此检查
+
 ### 生产环境
 
 在生产环境中，建议：

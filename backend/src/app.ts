@@ -13,6 +13,7 @@ import { stream } from './utils/logger';
 import swaggerSpec from './config/swagger';
 import * as path from 'path';
 import * as fs from 'fs';
+import { getBasicCSP, getDocsCSP } from './utils/cspHelper';
 
 const app: Application = express();
 
@@ -22,7 +23,8 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com", "cdn.redoc.ly"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "blob:", "cdn.jsdelivr.net", "fonts.googleapis.com", "cdn.redoc.ly"],
+      workerSrc: ["'self'", "blob:"],
       styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com", "cdn.jsdelivr.net"],
       imgSrc: ["'self'", "data:", "cdn.jsdelivr.net"],
       fontSrc: ["'self'", "fonts.gstatic.com", "fonts.googleapis.com"],
@@ -64,10 +66,29 @@ app.use(morgan('combined', { stream }));
 // 为Swagger UI创建特定中间件，确保所有资源通过HTTP加载
 app.use('/api-docs', (req: Request, res: Response, next: NextFunction) => {
   // 设置特定的CSP策略，允许加载所有Swagger UI资源
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'"
-  );
+  res.setHeader('Content-Security-Policy', getDocsCSP());
+  // 确保不会使用HSTS头
+  res.setHeader('Strict-Transport-Security', 'max-age=0');
+  next();
+});
+
+// 为ReDoc文档添加特定中间件，确保所有资源通过HTTP加载
+app.use('/docs', (req: Request, res: Response, next: NextFunction) => {
+  // 设置特定的CSP策略，允许加载所有ReDoc资源，包括Web Worker
+  res.setHeader('Content-Security-Policy', getDocsCSP());
+  // 确保不会使用HSTS头
+  res.setHeader('Strict-Transport-Security', 'max-age=0');
+  next();
+});
+
+// 为ReDoc的JS文件添加特定中间件
+app.use('/redoc-standalone.js', (req: Request, res: Response, next: NextFunction) => {
+  // 设置适当的内容类型
+  res.setHeader('Content-Type', 'application/javascript');
+  // 设置缓存控制头，提高性能
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  // 设置CSP允许Web Worker
+  res.setHeader('Content-Security-Policy', getDocsCSP());
   // 确保不会使用HSTS头
   res.setHeader('Strict-Transport-Security', 'max-age=0');
   next();
@@ -125,6 +146,9 @@ app.get('/docs', (req: Request, res: Response) => {
   const host = req.get('host');
   const baseUrl = `${protocol}://${host}`;
   
+  // 获取CSP策略
+  const cspPolicy = getDocsCSP();
+  
   // 读取ReDoc HTML模板并注入我们的API规范
   const htmlContent = `
 <!DOCTYPE html>
@@ -133,6 +157,7 @@ app.get('/docs', (req: Request, res: Response) => {
     <title>JobTrip API 文档 - ReDoc</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="${cspPolicy}">
     <style>
       body {
         margin: 0;
@@ -197,7 +222,7 @@ app.get('/docs', (req: Request, res: Response) => {
   </head>
   <body>
     <redoc spec-url="${baseUrl}/api-docs.json" hide-download-button></redoc>
-    <script src="${baseUrl}/redoc-standalone.js"></script>
+    <script src="/redoc-standalone.js"></script>
     <script>
       // 自定义主题配置
       window.addEventListener('load', function() {
@@ -255,6 +280,23 @@ app.get('/redoc-standalone.js', (req: Request, res: Response) => {
 app.use('/static-docs', express.static(path.join(__dirname, '../public/docs')));
 // 设置静态文件目录，提供本地静态资源
 app.use('/public', express.static(path.join(__dirname, '../public')));
+
+// 为所有静态资源添加安全头信息
+app.use('/static-docs', (req: Request, res: Response, next: NextFunction) => {
+  // 设置内容安全策略
+  res.setHeader('Content-Security-Policy', getBasicCSP());
+  // 禁用HSTS
+  res.setHeader('Strict-Transport-Security', 'max-age=0');
+  next();
+});
+
+app.use('/public', (req: Request, res: Response, next: NextFunction) => {
+  // 设置内容安全策略
+  res.setHeader('Content-Security-Policy', getBasicCSP());
+  // 禁用HSTS
+  res.setHeader('Strict-Transport-Security', 'max-age=0');
+  next();
+});
 
 // 处理favicon请求
 app.get('/favicon.ico', (req: Request, res: Response) => {

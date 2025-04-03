@@ -74,7 +74,7 @@ if (!fs.existsSync(certsDir) || !fs.existsSync(keyPath) || !fs.existsSync(certPa
   opensslCmd.on('close', (code) => {
     if (code === 0) {
       console.log('\x1b[32m%s\x1b[0m', '自签名证书生成成功！');
-      startDevServer();
+      checkResources();
     } else {
       console.error('\x1b[31m%s\x1b[0m', `证书生成失败，退出码: ${code}`);
       process.exit(1);
@@ -82,13 +82,36 @@ if (!fs.existsSync(certsDir) || !fs.existsSync(keyPath) || !fs.existsSync(certPa
   });
 } else {
   console.log('\x1b[32m%s\x1b[0m', '发现SSL证书，正在启动HTTPS服务器...');
-  startDevServer();
+  checkResources();
+}
+
+// 检查资源文件
+function checkResources() {
+  console.log('检查必要资源文件...');
+  const checkResourcesCmd = spawn('npm', ['run', 'check-resources'], {
+    stdio: 'inherit',
+    shell: true
+  });
+
+  checkResourcesCmd.on('close', (code) => {
+    if (code !== 0) {
+      console.error('\x1b[31m%s\x1b[0m', '资源检查失败，退出码:', code);
+      process.exit(code);
+    }
+    
+    // 资源检查成功，启动开发服务器
+    startDevServer();
+  });
 }
 
 function startDevServer() {
   // 设置环境变量
   process.env.NODE_ENV = 'development';
   process.env.ENABLE_HTTPS = 'true';
+  
+  console.log('\x1b[32m%s\x1b[0m', '注意: 此模式使用HTTPS协议，资源将通过HTTPS加载。');
+  console.log('\x1b[32m%s\x1b[0m', '如果看到有关CSP或Web Worker的错误，请检查文档: docs/http-https-dev.md');
+  console.log('\x1b[33m%s\x1b[0m', '由于使用自签名证书，浏览器可能会显示安全警告，这是正常的。');
   
   // 启动开发服务器
   const server = spawn('npm', ['run', 'dev'], {

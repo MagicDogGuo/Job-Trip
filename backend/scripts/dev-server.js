@@ -36,31 +36,54 @@ console.log('\x1b[0m%s\x1b[0m', '');
 // 设置环境变量
 process.env.NODE_ENV = 'development';
 
-// 启动开发服务器
-const server = spawn('npm', ['run', 'dev'], {
-  stdio: 'pipe',
+// 先检查资源
+console.log('检查必要资源文件...');
+const checkResources = spawn('npm', ['run', 'check-resources'], {
+  stdio: 'inherit',
   shell: true
 });
 
-// 监听服务器的输出
-server.stdout.on('data', (data) => {
-  const output = data.toString();
-  console.log(output.trim());
-  accessLogStream.write(`[${new Date().toISOString()}] ${output}`);
+checkResources.on('close', (code) => {
+  if (code !== 0) {
+    console.error('\x1b[31m%s\x1b[0m', '资源检查失败，退出码:', code);
+    process.exit(code);
+  }
+  
+  // 资源检查成功，启动开发服务器
+  startDevServer();
 });
 
-server.stderr.on('data', (data) => {
-  const output = data.toString();
-  console.error('\x1b[31m%s\x1b[0m', output.trim());
-  errorLogStream.write(`[${new Date().toISOString()}] ${output}`);
-});
-
-// 监听服务器的退出
-server.on('close', (code) => {
-  console.log('\x1b[31m%s\x1b[0m', `开发服务器已关闭，退出码: ${code}`);
-  accessLogStream.end();
-  errorLogStream.end();
-});
+// 启动开发服务器
+function startDevServer() {
+  console.log('启动开发服务器...');
+  console.log('\x1b[32m%s\x1b[0m', '注意: 此模式强制使用HTTP协议，所有资源都将通过HTTP加载。');
+  console.log('\x1b[32m%s\x1b[0m', '如果看到有关CSP或Web Worker的错误，请检查文档: docs/http-https-dev.md');
+  
+  const server = spawn('npm', ['run', 'dev'], {
+    stdio: 'pipe',
+    shell: true
+  });
+  
+  // 监听服务器的输出
+  server.stdout.on('data', (data) => {
+    const output = data.toString();
+    console.log(output.trim());
+    accessLogStream.write(`[${new Date().toISOString()}] ${output}`);
+  });
+  
+  server.stderr.on('data', (data) => {
+    const output = data.toString();
+    console.error('\x1b[31m%s\x1b[0m', output.trim());
+    errorLogStream.write(`[${new Date().toISOString()}] ${output}`);
+  });
+  
+  // 监听服务器的退出
+  server.on('close', (code) => {
+    console.log('\x1b[31m%s\x1b[0m', `开发服务器已关闭，退出码: ${code}`);
+    accessLogStream.end();
+    errorLogStream.end();
+  });
+}
 
 // 处理进程信号
 process.on('SIGINT', () => {
