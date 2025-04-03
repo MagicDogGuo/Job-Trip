@@ -9,6 +9,9 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 // 懒加载组件
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
+const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
+const ResumeBuilderPage = lazy(() => import('@/pages/ResumeBuilderPage'));
+const AutoFillPage = lazy(() => import('@/pages/AutoFillPage'));
 const JobsPage = lazy(() => import('@/pages/JobsPage'));
 const JobDetailPage = lazy(() => import('@/pages/JobDetailPage'));
 const JobFormPage = lazy(() => import('@/pages/JobFormPage'));
@@ -61,6 +64,9 @@ const AppRoutes = () => {
         
         {/* 需要认证的路由 */}
         <Route path="/dashboard" element={<ProtectedLayoutRoute element={<DashboardPage />} />} />
+        <Route path="/welcome" element={<ProtectedLayoutRoute element={<WelcomePage />} />} />
+        <Route path="/resume-builder" element={<ProtectedLayoutRoute element={<ResumeBuilderPage />} />} />
+        <Route path="/auto-fill" element={<ProtectedLayoutRoute element={<AutoFillPage />} />} />
         
         {/* 职位相关路由 */}
         <Route path="/jobs" element={<ProtectedLayoutRoute element={<JobsPage />} />} />
