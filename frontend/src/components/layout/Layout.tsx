@@ -19,9 +19,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   // 未登录用户显示标准布局（顶部导航）
   if (!isAuthenticated) {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="layout">
         <Header />
-        <main className="flex-grow pt-16">
+        <main className="main-content">
           {children}
         </main>
         <Footer />
@@ -31,11 +31,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   
   // 已登录用户显示侧边栏布局
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="layout-sidebar">
       <Sidebar />
       <div className="flex flex-col flex-1 w-full ml-0 md:ml-64">
         <Header />
-        <main className="flex-grow p-6 pt-20 overflow-y-auto">
+        <main className="main-content-sidebar">
           {children}
         </main>
       </div>

@@ -32,27 +32,27 @@ const Sidebar: React.FC = () => {
     { 
       name: '欢迎', 
       path: '/welcome', 
-      icon: <Home className="w-5 h-5" /> 
+      icon: <Home className="sidebar-menu-icon" /> 
     },
     { 
       name: '简历生成器', 
       path: '/resume-builder', 
-      icon: <FileText className="w-5 h-5" /> 
+      icon: <FileText className="sidebar-menu-icon" /> 
     },
     { 
       name: 'AI求职信和更多', 
       path: '/cover-letters', 
-      icon: <Sparkles className="w-5 h-5" /> 
+      icon: <Sparkles className="sidebar-menu-icon" /> 
     },
     { 
       name: '自动填表', 
       path: '/auto-fill', 
-      icon: <Zap className="w-5 h-5" /> 
+      icon: <Zap className="sidebar-menu-icon" /> 
     },
     { 
       name: 'Chrome扩展', 
       path: '/chrome-extension', 
-      icon: <Chrome className="w-5 h-5" /> 
+      icon: <Chrome className="sidebar-menu-icon" /> 
     }
   ];
 
@@ -61,17 +61,17 @@ const Sidebar: React.FC = () => {
     { 
       name: '个人资料', 
       path: '/profile', 
-      icon: <User className="w-5 h-5" /> 
+      icon: <User className="sidebar-menu-icon" /> 
     },
     { 
       name: '联系人', 
       path: '/contacts', 
-      icon: <Users className="w-5 h-5" /> 
+      icon: <Users className="sidebar-menu-icon" /> 
     },
     { 
       name: '文档', 
       path: '/documents', 
-      icon: <File className="w-5 h-5" /> 
+      icon: <File className="sidebar-menu-icon" /> 
     }
   ];
 
@@ -81,10 +81,10 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <div className="fixed inset-y-0 left-0 z-10 flex-shrink-0 w-64 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 hidden md:block">
+    <div className="sidebar">
       <div className="flex flex-col h-full">
         {/* 顶部Logo区域 */}
-        <div className="px-4 py-5">
+        <div className="sidebar-logo">
           <div className="flex items-center">
             <div className="p-1.5 bg-indigo-100 rounded dark:bg-indigo-900">
               <Star className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
@@ -94,18 +94,18 @@ const Sidebar: React.FC = () => {
         </div>
 
         {/* 主菜单 */}
-        <div className="flex-grow px-4 py-2 space-y-1 overflow-y-auto">
+        <div className="sidebar-content">
           {mainMenuItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-lg ${
+              className={`sidebar-menu-item ${
                 isActive(item.path)
-                  ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-100'
-                  : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                  ? 'sidebar-menu-item-active'
+                  : 'sidebar-menu-item-inactive'
               }`}
             >
-              <div className={`${isActive(item.path) ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}>
+              <div className={`${isActive(item.path) ? 'sidebar-menu-icon-active' : 'sidebar-menu-icon-inactive'}`}>
                 {item.icon}
               </div>
               <span className="ml-3">{item.name}</span>
@@ -113,20 +113,20 @@ const Sidebar: React.FC = () => {
           ))}
 
           {/* 分割线 */}
-          <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
+          <div className="sidebar-divider"></div>
 
           {/* 二级菜单 */}
           {secondaryMenuItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-lg ${
+              className={`sidebar-menu-item ${
                 isActive(item.path)
-                  ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-100'
-                  : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                  ? 'sidebar-menu-item-active'
+                  : 'sidebar-menu-item-inactive'
               }`}
             >
-              <div className={`${isActive(item.path) ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'}`}>
+              <div className={`${isActive(item.path) ? 'sidebar-menu-icon-active' : 'sidebar-menu-icon-inactive'}`}>
                 {item.icon}
               </div>
               <span className="ml-3">{item.name}</span>
@@ -134,7 +134,7 @@ const Sidebar: React.FC = () => {
           ))}
 
           {/* 分割线 */}
-          <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
+          <div className="sidebar-divider"></div>
 
           {/* 工作追踪器部分 */}
           <div className="mb-2">
@@ -149,10 +149,10 @@ const Sidebar: React.FC = () => {
               <Link
                 key={index}
                 to={tracker.path}
-                className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-lg ${
+                className={`sidebar-menu-item ${
                   isActive(tracker.path)
-                    ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-100'
-                    : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                    ? 'sidebar-menu-item-active'
+                    : 'sidebar-menu-item-inactive'
                 }`}
               >
                 <div className="flex items-center justify-center w-5 h-5 text-white bg-indigo-600 rounded-full dark:bg-indigo-500">
@@ -165,22 +165,22 @@ const Sidebar: React.FC = () => {
         </div>
 
         {/* 底部升级区域 */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="sidebar-footer">
           <div className="p-3 bg-indigo-50 rounded-lg dark:bg-indigo-900/30">
             <div className="flex items-center">
               <Star className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               <span className="ml-2 text-sm font-medium text-indigo-800 dark:text-indigo-200">JobTrip Pro</span>
             </div>
             <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">提升您的求职搜索体验</p>
-            <button className="w-full px-3 py-1.5 mt-2 text-xs font-medium text-center text-white bg-indigo-600 rounded hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600">
+            <button className="btn btn-primary w-full px-3 py-1.5 mt-2 text-xs">
               立即升级
             </button>
           </div>
         </div>
 
         {/* 用户信息区域 */}
-        <div className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-center w-8 h-8 text-white bg-indigo-600 rounded-full">
+        <div className="sidebar-user">
+          <div className="icon-container icon-container-primary">
             {user?.firstName?.charAt(0) || user?.username?.charAt(0) || 'U'}
           </div>
           <div className="ml-3">

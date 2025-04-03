@@ -50,53 +50,53 @@ const ResumeBuilderPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2 dark:text-white">简历生成器</h1>
-        <p className="text-gray-600 dark:text-gray-300">
+    <div className="container-lg">
+      <div className="section">
+        <h1 className="title-lg">简历生成器</h1>
+        <p className="text-description">
           使用JobTrip的智能简历生成器创建专业、吸引人的简历，针对特定职位进行自动优化
         </p>
       </div>
 
       {/* 简历分类部分 */}
-      <div className="mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="section">
+        <div className="grid-cols-1-2">
           {/* 基础简历部分 */}
-          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+          <div className="card">
             <div 
-              className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center cursor-pointer dark:bg-gray-700 dark:border-gray-600"
+              className="card-header cursor-pointer"
               onClick={() => toggleAccordion('基础简历')}
             >
               <div>
-                <h2 className="text-lg font-medium text-gray-900 dark:text-white">基础简历</h2>
+                <h2 className="title-sm">基础简历</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">创建一份多功能简历作为基础模板</p>
               </div>
               <div>
                 {activeAccordion === '基础简历' ? (
-                  <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <ChevronUp className="accordion-icon" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <ChevronDown className="accordion-icon" />
                 )}
               </div>
             </div>
             
             {activeAccordion === '基础简历' && (
-              <div className="p-4">
+              <div className="card-body">
                 <div className="space-y-4">
                   {resumeList.filter(resume => !resume.tailored).map(resume => (
                     <div 
                       key={resume.id}
-                      className="border border-gray-200 rounded-lg overflow-hidden dark:border-gray-700"
+                      className="resume-card"
                     >
                       <div 
-                        className="p-3 flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+                        className="resume-card-header"
                         onClick={() => toggleResumeExpand(resume.id)}
                       >
                         <div className="flex items-center">
                           <img 
                             src={resume.thumbnail} 
                             alt={resume.name}
-                            className="w-10 h-14 object-cover rounded mr-3"
+                            className="resume-thumbnail"
                           />
                           <div>
                             <h3 className="font-medium text-gray-900 dark:text-white">{resume.name}</h3>
@@ -107,29 +107,29 @@ const ResumeBuilderPage: React.FC = () => {
                         </div>
                         <div>
                           {expandedResume === resume.id ? (
-                            <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                            <ChevronUp className="accordion-icon" />
                           ) : (
-                            <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                            <ChevronDown className="accordion-icon" />
                           )}
                         </div>
                       </div>
                       
                       {expandedResume === resume.id && (
-                        <div className="p-3 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                        <div className="card-footer">
                           <div className="flex flex-wrap gap-2">
-                            <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600">
+                            <button className="btn btn-outline btn-sm">
                               <Edit className="w-4 h-4 mr-1.5" />
                               编辑
                             </button>
-                            <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600">
+                            <button className="btn btn-outline btn-sm">
                               <Download className="w-4 h-4 mr-1.5" />
                               下载
                             </button>
-                            <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600">
+                            <button className="btn btn-outline btn-sm">
                               <Copy className="w-4 h-4 mr-1.5" />
                               复制
                             </button>
-                            <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:text-red-400 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600">
+                            <button className="btn btn-danger btn-sm">
                               <Trash className="w-4 h-4 mr-1.5" />
                               删除
                             </button>
@@ -139,7 +139,7 @@ const ResumeBuilderPage: React.FC = () => {
                     </div>
                   ))}
                   
-                  <button className="w-full py-3 px-4 bg-indigo-50 text-indigo-600 rounded-lg border border-dashed border-indigo-300 flex items-center justify-center dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-700">
+                  <button className="resume-add-button">
                     <Plus className="w-5 h-5 mr-2" />
                     创建新的基础简历
                   </button>
@@ -149,41 +149,41 @@ const ResumeBuilderPage: React.FC = () => {
           </div>
           
           {/* 定制简历部分 */}
-          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+          <div className="card">
             <div 
-              className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center cursor-pointer dark:bg-gray-700 dark:border-gray-600"
+              className="card-header cursor-pointer"
               onClick={() => toggleAccordion('定制简历')}
             >
               <div>
-                <h2 className="text-lg font-medium text-gray-900 dark:text-white">定制简历</h2>
+                <h2 className="title-sm">定制简历</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">针对特定职位优化的简历版本</p>
               </div>
               <div>
                 {activeAccordion === '定制简历' ? (
-                  <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <ChevronUp className="accordion-icon" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <ChevronDown className="accordion-icon" />
                 )}
               </div>
             </div>
             
             {activeAccordion === '定制简历' && (
-              <div className="p-4">
+              <div className="card-body">
                 <div className="space-y-4">
                   {resumeList.filter(resume => resume.tailored).map(resume => (
                     <div 
                       key={resume.id}
-                      className="border border-gray-200 rounded-lg overflow-hidden dark:border-gray-700"
+                      className="resume-card"
                     >
                       <div 
-                        className="p-3 flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+                        className="resume-card-header"
                         onClick={() => toggleResumeExpand(resume.id)}
                       >
                         <div className="flex items-center">
                           <img 
                             src={resume.thumbnail} 
                             alt={resume.name}
-                            className="w-10 h-14 object-cover rounded mr-3"
+                            className="resume-thumbnail"
                           />
                           <div>
                             <h3 className="font-medium text-gray-900 dark:text-white">{resume.name}</h3>
@@ -194,29 +194,29 @@ const ResumeBuilderPage: React.FC = () => {
                         </div>
                         <div>
                           {expandedResume === resume.id ? (
-                            <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                            <ChevronUp className="accordion-icon" />
                           ) : (
-                            <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                            <ChevronDown className="accordion-icon" />
                           )}
                         </div>
                       </div>
                       
                       {expandedResume === resume.id && (
-                        <div className="p-3 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                        <div className="card-footer">
                           <div className="flex flex-wrap gap-2">
-                            <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600">
+                            <button className="btn btn-outline btn-sm">
                               <Edit className="w-4 h-4 mr-1.5" />
                               编辑
                             </button>
-                            <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600">
+                            <button className="btn btn-outline btn-sm">
                               <Download className="w-4 h-4 mr-1.5" />
                               下载
                             </button>
-                            <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600">
+                            <button className="btn btn-outline btn-sm">
                               <FileText className="w-4 h-4 mr-1.5" />
                               预览
                             </button>
-                            <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-indigo-600 bg-indigo-50 border border-indigo-300 rounded-md hover:bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/30 dark:border-indigo-700 dark:hover:bg-indigo-900/50">
+                            <button className="btn btn-secondary btn-sm">
                               <ExternalLink className="w-4 h-4 mr-1.5" />
                               申请职位
                             </button>
@@ -226,7 +226,7 @@ const ResumeBuilderPage: React.FC = () => {
                     </div>
                   ))}
                   
-                  <button className="w-full py-3 px-4 bg-indigo-50 text-indigo-600 rounded-lg border border-dashed border-indigo-300 flex items-center justify-center dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-700">
+                  <button className="resume-add-button">
                     <Plus className="w-5 h-5 mr-2" />
                     从现有简历创建定制版本
                   </button>
@@ -238,19 +238,19 @@ const ResumeBuilderPage: React.FC = () => {
       </div>
       
       {/* 简历建议部分 */}
-      <div className="mb-8 bg-white border border-gray-200 rounded-lg p-6 dark:bg-gray-800 dark:border-gray-700">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4 dark:text-white">简历建议</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="border border-gray-200 rounded-lg p-4 dark:border-gray-700">
+      <div className="section card p-6">
+        <h2 className="title-md">简历建议</h2>
+        <div className="grid-cols-1-2">
+          <div className="resume-tip-card">
             <h3 className="font-medium text-gray-900 mb-2 dark:text-white">简历长度</h3>
-            <p className="text-sm text-gray-600 mb-4 dark:text-gray-300">
+            <p className="text-sm text-description mb-4">
               您的简历应该保持在1-2页之间。当前简历有3页，考虑精简内容以提高可读性。
             </p>
             <button className="text-sm text-indigo-600 font-medium dark:text-indigo-400">查看如何优化 →</button>
           </div>
-          <div className="border border-gray-200 rounded-lg p-4 dark:border-gray-700">
+          <div className="resume-tip-card">
             <h3 className="font-medium text-gray-900 mb-2 dark:text-white">行动导向的成就</h3>
-            <p className="text-sm text-gray-600 mb-4 dark:text-gray-300">
+            <p className="text-sm text-description mb-4">
               使用行动词来开始您的成就描述，并量化结果以展示您的影响力。
             </p>
             <button className="text-sm text-indigo-600 font-medium dark:text-indigo-400">查看示例 →</button>

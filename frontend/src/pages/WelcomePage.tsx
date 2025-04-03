@@ -51,11 +51,11 @@ const WelcomePage: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="container-sm">
       {/* 欢迎标语和愉快图案背景 */}
-      <div className="relative mb-8 py-12 px-6 bg-indigo-50 rounded-xl dark:bg-indigo-900/20 overflow-hidden">
+      <div className="welcome-banner">
         {/* 背景装饰 */}
-        <div className="absolute inset-0 overflow-hidden opacity-30">
+        <div className="welcome-banner-decoration">
           <div className="absolute top-5 left-10 w-6 h-6 bg-yellow-300 rounded-full"></div>
           <div className="absolute top-20 right-20 w-8 h-8 bg-green-300 rounded"></div>
           <div className="absolute bottom-10 left-1/4 w-5 h-5 bg-red-300 rounded-full"></div>
@@ -64,33 +64,33 @@ const WelcomePage: React.FC = () => {
         </div>
         
         <div className="relative">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 dark:text-white">
+          <h1 className="title-lg mb-6">
             欢迎，{userName}！
           </h1>
           <div className="text-4xl md:text-6xl font-bold text-indigo-800 dark:text-indigo-300">
             Draven!
           </div>
-          <p className="mt-6 text-lg text-gray-600 max-w-2xl dark:text-gray-300">
+          <p className="mt-6 text-lg text-description max-w-2xl">
             体验JobTrip的全部功能，完成下面的步骤来高效管理您的求职过程，提高成功率，加速您的职业发展。
           </p>
         </div>
       </div>
 
       {/* 入门步骤 */}
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-800 mb-6 dark:text-white">开始使用</h2>
-        <div className="space-y-4">
+      <div className="section">
+        <h2 className="title-md mb-6">开始使用</h2>
+        <div className="welcome-steps-container">
           {onboardingSteps.map((step) => (
             <div 
               key={step.id} 
-              className="p-5 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
+              className="welcome-step"
             >
               <div className="flex items-start">
                 <div className="flex-shrink-0 mr-4">
-                  <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
+                  <div className={`welcome-step-number ${
                     step.status === 'completed' 
-                      ? 'border-green-500 bg-green-100 dark:bg-green-900/30' 
-                      : 'border-indigo-500 bg-indigo-100 dark:bg-indigo-900/30'
+                      ? 'welcome-step-number-completed' 
+                      : 'welcome-step-number-pending'
                   }`}>
                     {step.status === 'completed' ? (
                       <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
@@ -100,22 +100,22 @@ const WelcomePage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex-grow">
-                  <h3 className="text-lg font-medium text-gray-900 mb-1 dark:text-white">
+                  <h3 className="title-sm mb-1">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-3 dark:text-gray-300">
+                  <p className="text-sm text-description mb-3">
                     {step.description}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {step.id === 1 && (
-                      <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600">
+                      <button className="btn btn-primary">
                         <Download className="w-4 h-4 mr-1.5" />
                         下载Chrome扩展
                       </button>
                     )}
                     <Link 
                       to={step.path} 
-                      className="inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/30 dark:hover:bg-indigo-800/50"
+                      className="btn btn-secondary"
                     >
                       开始 <ChevronRight className="w-4 h-4 ml-1.5" />
                     </Link>
