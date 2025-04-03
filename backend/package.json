@@ -7,9 +7,12 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "dev:http": "node scripts/dev-server.js",
+    "dev:https": "node scripts/https-server.js",
     "lint": "eslint . --ext .ts",
     "test": "jest",
-    "generate-docs": "node scripts/generate-redoc.js"
+    "generate-docs": "node scripts/generate-redoc.js",
+    "init-db": "node scripts/initdb.js"
   },
   "dependencies": {
     "@types/swagger-jsdoc": "^6.0.4",

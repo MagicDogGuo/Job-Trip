@@ -182,3 +182,30 @@ Authorization: Bearer YOUR_JWT_TOKEN
 ## 许可证
 
 MIT 
+
+## 开发指南
+
+### 启动开发服务器
+
+项目支持HTTP和HTTPS两种模式进行开发：
+
+```bash
+# HTTP模式（默认）
+npm run dev:http
+
+# HTTPS模式（使用自签名证书）
+npm run dev:https
+```
+
+### HTTP/HTTPS问题排查
+
+如果遇到浏览器报SSL错误，可能原因有：
+
+1. 服务器运行在HTTP模式，但资源通过HTTPS请求
+2. 使用了自签名证书，浏览器显示不安全警告
+
+解决方法：
+
+- 使用HTTP模式：`npm run dev:http`
+- 在浏览器中手动接受自签名证书
+- 参考 `docs/http-https-dev.md` 了解更多细节 
