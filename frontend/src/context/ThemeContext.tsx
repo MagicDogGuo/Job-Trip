@@ -1,7 +1,4 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
-import { lightTheme, darkTheme } from '@/styles/theme';
 
 // 主题模式类型
 type ThemeMode = 'light' | 'dark';
@@ -66,16 +63,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     };
   }, []);
 
-  // 根据当前模式选择主题
-  const theme = mode === 'light' ? lightTheme : darkTheme;
+  // 应用暗色模式到HTML元素
+  useEffect(() => {
+    if (mode === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [mode]);
 
-  // 提供主题上下文和Material-UI主题
+  // 提供主题上下文
   return (
     <ThemeContext.Provider value={{ mode, toggleTheme }}>
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </MuiThemeProvider>
+      {children}
     </ThemeContext.Provider>
   );
 }; 
