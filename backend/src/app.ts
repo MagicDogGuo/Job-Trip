@@ -61,16 +61,60 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // HTTP请求日志
 app.use(morgan('combined', { stream }));
 
+// 为Swagger UI创建特定中间件，确保所有资源通过HTTP加载
+app.use('/api-docs', (req: Request, res: Response, next: NextFunction) => {
+  // 设置特定的CSP策略，允许加载所有Swagger UI资源
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'"
+  );
+  // 确保不会使用HSTS头
+  res.setHeader('Strict-Transport-Security', 'max-age=0');
+  next();
+});
+
 // Swagger文档
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customCss: '.swagger-ui .topbar { display: none }',
   customSiteTitle: 'JobTrip API 文档',
+  swaggerOptions: {
+    url: '/api-docs.json',
+    docExpansion: 'list',
+    persistAuthorization: true,
+    // 确保所有资源使用相对路径或HTTP协议
+    syntaxHighlight: {
+      activate: true,
+      theme: 'agate'
+    },
+    defaultModelsExpandDepth: 1,
+    defaultModelExpandDepth: 1,
+  }
 }));
 
 // 提供Swagger规范的JSON端点
 app.get('/api-docs.json', (req: Request, res: Response) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
+});
+
+// 提供Swagger UI的CSS和JS文件
+app.get('/api-docs/swagger-ui.css', (req: Request, res: Response) => {
+  // 从node_modules中获取Swagger UI的CSS文件
+  const cssPath = require.resolve('swagger-ui-dist/swagger-ui.css');
+  res.setHeader('Content-Type', 'text/css');
+  res.sendFile(cssPath);
+});
+
+app.get('/api-docs/swagger-ui-bundle.js', (req: Request, res: Response) => {
+  const jsPath = require.resolve('swagger-ui-dist/swagger-ui-bundle.js');
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(jsPath);
+});
+
+app.get('/api-docs/swagger-ui-standalone-preset.js', (req: Request, res: Response) => {
+  const jsPath = require.resolve('swagger-ui-dist/swagger-ui-standalone-preset.js');
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(jsPath);
 });
 
 // ReDoc 美化版API文档
