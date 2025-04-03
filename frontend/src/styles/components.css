@@ -1,0 +1,185 @@
+/* 按钮样式 */
+.btn {
+  @apply inline-flex items-center px-4 py-2 text-sm font-medium rounded-md;
+}
+
+.btn-primary {
+  @apply text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600;
+}
+
+.btn-secondary {
+  @apply text-indigo-600 bg-indigo-50 hover:bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/30 dark:hover:bg-indigo-800/50;
+}
+
+.btn-outline {
+  @apply text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600;
+}
+
+.btn-danger {
+  @apply text-red-700 bg-white border border-gray-300 hover:bg-gray-50 dark:text-red-400 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600;
+}
+
+.btn-sm {
+  @apply px-3 py-1.5 text-sm;
+}
+
+/* 卡片样式 */
+.card {
+  @apply bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700;
+}
+
+.card-header {
+  @apply p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center dark:bg-gray-700 dark:border-gray-600;
+}
+
+.card-body {
+  @apply p-4;
+}
+
+.card-footer {
+  @apply p-3 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800;
+}
+
+/* 徽章样式 */
+.badge {
+  @apply px-3 py-1.5 rounded-full text-sm font-medium;
+}
+
+.badge-primary {
+  @apply bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400;
+}
+
+.badge-success {
+  @apply bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400;
+}
+
+/* 表单样式 */
+.form-group {
+  @apply mb-4;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+}
+
+.form-input {
+  @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white;
+}
+
+/* 列表样式 */
+.list-item {
+  @apply flex items-center py-3 border-b border-gray-200 dark:border-gray-700;
+}
+
+.list-item:last-child {
+  @apply border-b-0;
+}
+
+/* 图标容器 */
+.icon-container {
+  @apply flex items-center justify-center w-8 h-8 rounded-full;
+}
+
+.icon-container-primary {
+  @apply text-white bg-indigo-600 dark:bg-indigo-700;
+}
+
+.icon-container-secondary {
+  @apply text-gray-500 bg-gray-100 dark:text-gray-400 dark:bg-gray-700;
+}
+
+/* 标签页样式 */
+.tabs {
+  @apply flex flex-wrap -mb-px border-b border-gray-200 dark:border-gray-700;
+}
+
+.tab {
+  @apply py-3 px-4 text-sm font-medium border-b-2;
+}
+
+.tab-active {
+  @apply border-indigo-500 text-indigo-600 dark:text-indigo-400 dark:border-indigo-400;
+}
+
+.tab-inactive {
+  @apply border-transparent text-gray-500 hover:border-gray-300 dark:text-gray-400 dark:hover:border-gray-600;
+}
+
+/* 通用间距与布局 */
+.section {
+  @apply mb-8;
+}
+
+.container-sm {
+  @apply max-w-4xl mx-auto;
+}
+
+.container-lg {
+  @apply max-w-6xl mx-auto;
+}
+
+/* 栅格布局 */
+.grid-cols-1-2 {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+/* 提示框样式 */
+.alert {
+  @apply p-4 mb-4 rounded-lg;
+}
+
+.alert-info {
+  @apply bg-indigo-50 border border-indigo-200 dark:bg-indigo-900/20 dark:border-indigo-800;
+}
+
+.alert-success {
+  @apply bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800;
+}
+
+.alert-warning {
+  @apply bg-yellow-50 border border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800;
+}
+
+/* 数据展示项 */
+.data-item {
+  @apply flex items-center mb-4;
+}
+
+.data-item-icon {
+  @apply flex-shrink-0 w-10;
+}
+
+.data-item-content {
+  @apply flex-grow;
+}
+
+.data-item-label {
+  @apply text-sm font-medium text-gray-500 dark:text-gray-400;
+}
+
+.data-item-value {
+  @apply text-gray-900 dark:text-white;
+}
+
+/* 标题样式 */
+.title-lg {
+  @apply text-3xl font-bold text-gray-900 mb-2 dark:text-white;
+}
+
+.title-md {
+  @apply text-xl font-semibold text-gray-900 mb-4 dark:text-white;
+}
+
+.title-sm {
+  @apply text-lg font-medium text-gray-900 dark:text-white;
+}
+
+/* 描述文本 */
+.text-description {
+  @apply text-gray-600 dark:text-gray-300;
+}
+
+/* 手风琴展开图标 */
+.accordion-icon {
+  @apply w-5 h-5 text-gray-500 dark:text-gray-400;
+} 

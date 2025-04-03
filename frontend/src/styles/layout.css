@@ -1,0 +1,146 @@
+/* 主布局样式 */
+.layout {
+  @apply flex flex-col min-h-screen;
+}
+
+.layout-sidebar {
+  @apply flex min-h-screen bg-gray-50 dark:bg-gray-900;
+}
+
+/* 侧边栏样式 */
+.sidebar {
+  @apply fixed inset-y-0 left-0 z-10 flex-shrink-0 w-64 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 hidden md:block;
+}
+
+.sidebar-logo {
+  @apply px-4 py-5;
+}
+
+.sidebar-content {
+  @apply flex-grow px-4 py-2 space-y-1 overflow-y-auto;
+}
+
+.sidebar-footer {
+  @apply p-4 border-t border-gray-200 dark:border-gray-700;
+}
+
+.sidebar-user {
+  @apply flex items-center p-4 border-t border-gray-200 dark:border-gray-700;
+}
+
+/* 侧边栏菜单项 */
+.sidebar-menu-item {
+  @apply flex items-center px-3 py-2.5 text-sm font-medium rounded-lg;
+}
+
+.sidebar-menu-item-active {
+  @apply bg-indigo-50 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-100;
+}
+
+.sidebar-menu-item-inactive {
+  @apply text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700;
+}
+
+.sidebar-menu-icon {
+  @apply w-5 h-5;
+}
+
+.sidebar-menu-icon-active {
+  @apply text-indigo-600 dark:text-indigo-400;
+}
+
+.sidebar-menu-icon-inactive {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+.sidebar-divider {
+  @apply my-4 border-t border-gray-200 dark:border-gray-700;
+}
+
+/* 头部导航样式 */
+.header {
+  @apply fixed top-0 right-0 left-0 md:left-64 z-30 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700;
+}
+
+.header-nav {
+  @apply flex items-center justify-between h-16 px-4 md:px-6;
+}
+
+.header-nav-logged-out {
+  @apply fixed top-0 left-0 right-0 bg-white border-b z-50 dark:bg-gray-900 dark:border-gray-800;
+}
+
+.header-container {
+  @apply container mx-auto px-6 h-16 flex items-center justify-between;
+}
+
+.header-menu-button {
+  @apply p-1 mr-4 text-gray-500 rounded-md md:hidden hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-gray-700;
+}
+
+.header-breadcrumb {
+  @apply flex items-center text-gray-500 dark:text-gray-400;
+}
+
+.header-breadcrumb-link {
+  @apply text-sm hover:text-gray-700 dark:hover:text-gray-300;
+}
+
+.header-breadcrumb-separator {
+  @apply mx-2;
+}
+
+.header-breadcrumb-current {
+  @apply text-sm font-medium text-gray-800 dark:text-white;
+}
+
+.header-actions {
+  @apply flex items-center space-x-4;
+}
+
+.header-action-button {
+  @apply p-1.5 text-gray-500 rounded-full hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700;
+}
+
+.header-avatar {
+  @apply flex items-center justify-center w-8 h-8 text-white bg-indigo-600 rounded-full;
+}
+
+/* 移动端菜单 */
+.mobile-menu-overlay {
+  @apply fixed inset-0 z-40 md:hidden;
+}
+
+.mobile-menu-backdrop {
+  @apply absolute inset-0 bg-gray-600 opacity-75;
+}
+
+.mobile-menu {
+  @apply fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 overflow-y-auto;
+}
+
+.mobile-menu-header {
+  @apply p-4 border-b border-gray-200 dark:border-gray-700;
+}
+
+.mobile-menu-content {
+  @apply p-4;
+}
+
+.mobile-menu-item {
+  @apply block px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700;
+}
+
+/* 主要内容区 */
+.main-content {
+  @apply flex-grow pt-16;
+}
+
+.main-content-sidebar {
+  @apply flex-grow p-6 pt-20 overflow-y-auto;
+}
+
+/* 页脚样式 */
+.footer {
+  @apply bg-white border-t border-gray-200 py-8 dark:bg-gray-800 dark:border-gray-700;
+} 
