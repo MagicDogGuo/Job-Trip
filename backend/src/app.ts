@@ -158,6 +158,7 @@ app.get('/docs', (req: Request, res: Response) => {
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy" content="${cspPolicy}">
+    <link rel="icon" href="/favicon.ico" />
     <style>
       body {
         margin: 0;

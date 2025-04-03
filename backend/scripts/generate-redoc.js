@@ -47,7 +47,7 @@ try {
   console.log('📝 生成静态ReDoc文档...');
   
   try {
-    execSync(`npx redoc-cli bundle ${swaggerJsonUrl} -o ${path.join(OUTPUT_DIR, 'index.html')} --title "JobTrip API 文档" --disableGoogleFont`, {
+    execSync(`npx redoc-cli bundle ${swaggerJsonUrl} -o ${path.join(OUTPUT_DIR, 'index.html')} --title "JobTrip API 文档" --disableGoogleFont --favicon "/favicon.ico"`, {
       stdio: 'inherit'
     });
     
@@ -56,7 +56,7 @@ try {
   } catch (error) {
     console.error('❌ 生成静态文档失败，尝试手动方式...');
     console.log('请尝试手动运行以下命令:');
-    console.log(`npx redoc-cli bundle ${swaggerJsonUrl} -o ${path.join(OUTPUT_DIR, 'index.html')} --title "JobTrip API 文档" --disableGoogleFont`);
+    console.log(`npx redoc-cli bundle ${swaggerJsonUrl} -o ${path.join(OUTPUT_DIR, 'index.html')} --title "JobTrip API 文档" --disableGoogleFont --favicon "/favicon.ico"`);
   }
   
   // 创建一个自定义的CSS文件来改进样式
