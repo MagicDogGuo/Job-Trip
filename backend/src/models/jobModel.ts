@@ -1,12 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-// 薪资接口
-export interface ISalary {
-  min?: string;
-  max?: string;
-  currency?: string;
-}
-
 // 职位接口
 export interface IJob extends Document {
   platform: string;
