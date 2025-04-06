@@ -73,6 +73,12 @@ export interface Job {
   location?: string;
   salary?: string;
   link?: string;
+  platform: string;
+  source: string;
+  sourceId: string;
+  sourceUrl: string;
+  requirements: string[];
+  status: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -85,6 +91,12 @@ export interface CreateJobData {
   location?: string;
   salary?: string;
   link?: string;
+  platform: string;
+  source: string;
+  sourceId: string;
+  sourceUrl: string;
+  requirements: string[];
+  status: string;
 }
 
 // 用户-职位关联接口
