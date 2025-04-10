@@ -243,8 +243,8 @@ router.route('/')
  *                   - "熟悉JavaScript, HTML, CSS"
  *                   - "有React或Angular经验"
  *                   - "了解后端开发"
- *                 salary: "70k-90k NZD",
- *                 jobType: "full-time",
+ *                 salary: "70k-90k NZD"
+ *                 jobType: "full-time"
  *                 status: "new"
  *                 source: "seek"
  *                 sourceId: "12345"
