@@ -10,11 +10,11 @@ JobTrip is an intelligent job application tracking system designed to help job s
 
 ### Screenshots
 
-![Landing](https://github.com/user-attachments/assets/eb2d179b-bd1f-4360-8c66-9907bd513e89)
-![Login](https://github.com/user-attachments/assets/cdd83bfe-fecc-46de-9ba5-62ac5a48035e)
-![Welcome](https://github.com/user-attachments/assets/b8b53ea8-3f9e-4b8a-9a3e-92c0db6804ec)
-![Job List](https://github.com/user-attachments/assets/7007b4a3-da40-4587-9068-1e8f35154088)
-![Job Tracking](https://github.com/user-attachments/assets/acfd1185-28df-4bcd-b95e-173bd8fef576)
+Landing
+Login
+Welcome
+Job List
+Job Tracking
 
 ## Project Overview
 
@@ -31,6 +31,7 @@ JobTrip provides a one-stop solution for job seekers in the New Zealand job mark
 ## Tech Stack
 
 ### Frontend
+
 - React 19
 - TypeScript
 - Vite
@@ -41,6 +42,7 @@ JobTrip provides a one-stop solution for job seekers in the New Zealand job mark
 - Axios
 
 ### Backend
+
 - Node.js
 - Express.js
 - TypeScript
@@ -50,10 +52,10 @@ JobTrip provides a one-stop solution for job seekers in the New Zealand job mark
 - Winston (Log Management)
 
 ### Browser Extension
+
 - Chrome Extension API
 - Web Scraping Technology
-
-[Extension Introduction](JobTrip_Extention/README.md)
+- Extension introduction: [JobTrip_Extention/README.md](JobTrip_Extention/README.md)
 
 ## System Architecture
 
@@ -61,36 +63,37 @@ Single integrated view of how the **Chrome Extension**, **frontend**, and **back
 
 ```mermaid
 flowchart TB
-    subgraph Sites["Job Sites"]
-        WEB["LinkedIn · SEEK · Indeed"]
+    subgraph Sites[Job Sites]
+        WEB[LinkedIn / SEEK / Indeed]
     end
 
-    subgraph EXT["Chrome Extension (Simplified)"]
-        CS["Content Script<br/>Scrapes job DOM"]
-        PANEL["Side Panel<br/>List · Export"]
-        BG["Background<br/>Message relay"]
+    subgraph EXT[Chrome Extension Simplified]
+        CS[Content Script\nScrapes job DOM]
+        PANEL[Side Panel\nList and Export]
+        BG[Background\nMessage relay]
         CS <-->|scrapeJobs| BG
         BG <--> PANEL
         CS -->|job list| PANEL
     end
 
-    subgraph FE["JobTrip Frontend :3000"]
-        TOKEN["localStorage.token"]
+    subgraph FE[JobTrip Frontend 3000]
+        TOKEN[localStorage token]
     end
 
-    subgraph BE["Backend (Extension-related) :5001"]
-        API["POST /api/v1/jobs<br/>Header: Authorization Bearer JWT"]
-        AUTH["JWT validation to userId"]
-        PROC["createJobs: Job + UserJob"]
+    subgraph BE[Backend Extension Related 5001]
+        API[POST /api/v1/jobs\nAuthorization Bearer JWT]
+        AUTH[JWT validation to userId]
+        PROC[createJobs Job plus UserJob]
         API --> AUTH --> PROC
     end
 
-    subgraph DB["MongoDB"]
-        JOB[("jobs")]
-        UJ[("userjobs")]
+    subgraph DB[MongoDB]
+        JOB[(jobs)]
+        UJ[(userjobs)]
+        USER[(users)]
         PROC --> JOB
         PROC --> UJ
-        UJ -->|userId| USER[("users")]
+        UJ -->|userId| USER
         UJ -->|jobId| JOB
     end
 
@@ -101,54 +104,101 @@ flowchart TB
     PANEL -->|open jobs page| FE
 ```
 
-**Flow:** Extension scrapes jobs → reads frontend JWT → `POST /api/v1/jobs` → writes `jobs` + `userjobs` → opens frontend `/jobs`.
+### Extension & Backend Flow (Sequence)
 
-More detail (API payload, DB fields): [docs/architecture-extension-backend.md](docs/architecture-extension-backend.md)
+End-to-end sequence for scrape and export (`panel.js` → `storageService` → `POST /api/v1/jobs`):
+
+```mermaid
+sequenceDiagram
+    actor U as User
+    participant P as Side Panel
+    participant BG as Background
+    participant CS as Content Script
+    participant ST as storageService
+    participant FE as Frontend Tab
+    participant BE as Backend API
+    participant DB as MongoDB
+
+    U->>P: Start scrape
+    P->>BG: startScraping
+    BG->>CS: scrapeJobs
+    CS-->>BG: job list
+    BG-->>P: job list
+
+    U->>P: Export to JobTrip
+    P->>ST: getUserToken
+    ST->>FE: read localStorage token
+    FE-->>ST: JWT
+    ST-->>P: JWT
+
+    alt No token
+        P->>FE: Open login page
+        FE-->>P: User logs in
+        P->>ST: getUserToken retry
+        ST->>FE: read localStorage token
+        FE-->>ST: JWT
+        ST-->>P: JWT
+    end
+
+    P->>BE: POST api v1 jobs with Bearer JWT
+    BE->>BE: protect middleware validates JWT
+    BE->>DB: createJobs upsert jobs and userjobs
+    DB-->>BE: saved
+    BE-->>P: 201 or 207 response
+    P->>FE: Open jobs page tab
+```
+
+Static export (optional): [source/Extension+backendFlow.svg](source/Extension+backendFlow.svg)
+
+**Flow:** Extension scrapes jobs → reads frontend JWT → `POST /api/v1/jobs` → writes `jobs` + `userjobs` → opens frontend `/jobs`.
 
 The project adopts a frontend-backend separation architecture:
 
 1. **Frontend**:
-   - React single-page application responsible for user interface and interaction
-   - State management using Redux, with RTK managing API requests and local state
-   - Component design follows the "separation of concerns" principle, with components like StatusBadge managing UI state independently
-
+  - React single-page application responsible for user interface and interaction
+  - State management using Redux, with RTK managing API requests and local state
+  - Component design follows the "separation of concerns" principle, with components like StatusBadge managing UI state independently
 2. **Backend**:
-   - Node.js API service handling business logic and data storage
-   - RESTful API design following resource-oriented principles
-   - Multi-layer data model enabling flexible user-job relationship management
-
+  - Node.js API service handling business logic and data storage
+  - RESTful API design following resource-oriented principles
+  - Multi-layer data model enabling flexible user-job relationship management
 3. **Browser Extension**:
-   - Implements automatic collection of job information from recruitment websites
-   - Seamless integration with the main system
+  - Implements automatic collection of job information from recruitment websites
+  - Seamless integration with the main system
 
 ## Installation and Running
 
 ### Backend
 
 #### Prerequisites
+
 - Node.js (>=14.0.0)
 - MongoDB
 
 #### Install Dependencies
+
 ```bash
 cd backend
 npm install
 ```
 
 #### Environment Variables Configuration
+
 1. Copy the `.env.example` file to `.env`
 2. Modify the following configurations as needed:
-   - `PORT` - API service port
-   - `HOST` - Server listening address
-   - `MONGODB_URI` - MongoDB connection string
-   - `JWT_SECRET` - JWT key
+  - `PORT` - API service port
+  - `HOST` - Server listening address
+  - `MONGODB_URI` - MongoDB connection string
+  - `JWT_SECRET` - JWT key
 
 #### Run Development Environment
+
 ```bash
 npm run dev:http
 ```
 
 #### Build Production Environment
+
 ```bash
 npm run build
 npm start
@@ -157,15 +207,18 @@ npm start
 ### Frontend
 
 #### Prerequisites
+
 - Node.js (>=14.0.0)
 
 #### Install Dependencies
+
 ```bash
 cd frontend
 npm install
 ```
 
 #### Run Development Environment
+
 ```bash
 # Local development
 npm run dev
@@ -175,6 +228,7 @@ npm run dev:host
 ```
 
 #### Build Production Environment
+
 ```bash
 npm run build
 ```
@@ -184,12 +238,12 @@ npm run build
 API documentation is provided in the following ways:
 
 1. **Swagger UI Documentation**
-   - Local access: http://localhost:5001/api-docs
-
+  - Local access: [http://localhost:5001/api-docs](http://localhost:5001/api-docs)
 2. **ReDoc Enhanced Documentation** (Recommended)
-   - Local access: http://localhost:5001/docs
+  - Local access: [http://localhost:5001/docs](http://localhost:5001/docs)
 
 ### Generate Static API Documentation
+
 ```bash
 cd backend
 npm run generate-docs
@@ -198,11 +252,13 @@ npm run generate-docs
 ## Key Features
 
 ### User Management
+
 - User registration and login
 - Personal profile management
 - Password updates
 
 ### Job Management
+
 - Retrieve job listings
 - Create, view, update, and delete jobs
 - Job search and filtering
@@ -210,10 +266,12 @@ npm run generate-docs
 - **Job detail page** displays and updates job status, reflecting the latest status in real-time
 
 ### Company Management
+
 - Retrieve company lists
 - Create, view, update, and delete company information
 
 ### User-Job Association
+
 - **Personalized status tracking**: Each user independently manages the status of jobs they're interested in
 - **Multi-status support**: Supporting statuses like new job, applied, interviewing, hired, rejected, etc.
 - **Real-time status updates**: Frontend independent state management avoids page refreshes
