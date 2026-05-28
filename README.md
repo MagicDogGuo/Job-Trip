@@ -57,13 +57,53 @@ JobTrip provides a one-stop solution for job seekers in the New Zealand job mark
 
 ## System Architecture
 
-### Extension & Backend Flow
+Single integrated view of how the **Chrome Extension**, **frontend**, and **backend** connect during job export:
 
-![Extension and backend data flow](./source/Extension+backendFlow.svg)
+```mermaid
+flowchart TB
+    subgraph Sites["Job Sites"]
+        WEB["LinkedIn · SEEK · Indeed"]
+    end
 
-### Extension & Backend Architecture
+    subgraph EXT["Chrome Extension (Simplified)"]
+        CS["Content Script<br/>Scrapes job DOM"]
+        PANEL["Side Panel<br/>List · Export"]
+        BG["Background<br/>Message relay"]
+        CS <-->|scrapeJobs| BG
+        BG <--> PANEL
+        CS -->|jobs[]| PANEL
+    end
 
-![Extension and backend system architecture](./source/Extension+backend.svg)
+    subgraph FE["JobTrip Frontend :3000"]
+        TOKEN["localStorage.token"]
+    end
+
+    subgraph BE["Backend (Extension-related) :5001"]
+        API["POST /api/v1/jobs<br/>Header: Authorization Bearer JWT"]
+        AUTH["JWT validation → userId"]
+        PROC["createJobs → Job + UserJob"]
+        API --> AUTH --> PROC
+    end
+
+    subgraph DB["MongoDB"]
+        JOB[("jobs")]
+        UJ[("userjobs")]
+        PROC --> JOB
+        PROC --> UJ
+        UJ -->|userId| USER[("users")]
+        UJ -->|jobId| JOB
+    end
+
+    WEB --> CS
+    PANEL -->|read token| TOKEN
+    FE --> TOKEN
+    PANEL -->|batch export| API
+    PANEL -->|open /jobs on success| FE
+```
+
+**Flow:** Extension scrapes jobs → reads frontend JWT → `POST /api/v1/jobs` → writes `jobs` + `userjobs` → opens frontend `/jobs`.
+
+More detail (API payload, DB fields): [docs/architecture-extension-backend.md](docs/architecture-extension-backend.md)
 
 The project adopts a frontend-backend separation architecture:
 
@@ -218,6 +258,7 @@ npm run generate-docs
 │   └── package.json         # Project dependencies
 │
 └── docs/                    # Project documentation
+    ├── architecture-extension-backend.md   # Extension ↔ backend architecture
     ├── backend-requirements.md    # Backend requirements document
     ├── database-requirements.md   # Database requirements document
     ├── deployment-guide.md        # Deployment guide
