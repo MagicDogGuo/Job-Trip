@@ -57,6 +57,14 @@ JobTrip provides a one-stop solution for job seekers in the New Zealand job mark
 
 ## System Architecture
 
+### Extension & Backend Flow
+
+![Extension and backend data flow](./source/Extension+backendFlow.svg)
+
+### Extension & Backend Architecture
+
+![Extension and backend system architecture](./source/Extension+backend.svg)
+
 The project adopts a frontend-backend separation architecture:
 
 1. **Frontend**:
