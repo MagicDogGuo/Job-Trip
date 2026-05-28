@@ -71,7 +71,7 @@ flowchart TB
         BG["Background<br/>Message relay"]
         CS <-->|scrapeJobs| BG
         BG <--> PANEL
-        CS -->|jobs[]| PANEL
+        CS -->|job list| PANEL
     end
 
     subgraph FE["JobTrip Frontend :3000"]
@@ -80,8 +80,8 @@ flowchart TB
 
     subgraph BE["Backend (Extension-related) :5001"]
         API["POST /api/v1/jobs<br/>Header: Authorization Bearer JWT"]
-        AUTH["JWT validation → userId"]
-        PROC["createJobs → Job + UserJob"]
+        AUTH["JWT validation to userId"]
+        PROC["createJobs: Job + UserJob"]
         API --> AUTH --> PROC
     end
 
@@ -98,7 +98,7 @@ flowchart TB
     PANEL -->|read token| TOKEN
     FE --> TOKEN
     PANEL -->|batch export| API
-    PANEL -->|open /jobs on success| FE
+    PANEL -->|open jobs page| FE
 ```
 
 **Flow:** Extension scrapes jobs → reads frontend JWT → `POST /api/v1/jobs` → writes `jobs` + `userjobs` → opens frontend `/jobs`.
