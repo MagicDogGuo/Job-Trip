@@ -1,35 +1,35 @@
-# JobTrip 职途助手部署指南
+# JobTrip Career Assistant Deployment Guide
 
-本文档提供了在 Debian 12 服务器上部署 JobTrip 职途助手的完整步骤，包括前端、后端和数据库的配置。
+This document provides complete steps for deploying JobTrip on a Debian 12 server, including front-end, back-end, and database configuration.
 
-## 目录
+## Table of contents
 
-1. [环境准备](#1-环境准备)
-2. [MongoDB 数据库部署](#2-mongodb-数据库部署)
-3. [Redis 缓存部署（可选）](#3-redis-缓存部署可选)
-4. [后端服务部署](#4-后端服务部署)
-5. [前端应用部署](#5-前端应用部署)
-6. [Nginx 配置](#6-nginx-配置)
-7. [安全配置](#7-安全配置)
-8. [监控和维护](#8-监控和维护)
-9. [常见问题排查](#9-常见问题排查)
+1. [Environmental Preparation](#1-Environmental Preparation)
+2. [MongoDB database deployment](#2-mongodb-database deployment)
+3. [Redis cache deployment (optional)](#3-redis-cache deployment optional)
+4. [Backend service deployment](#4-Backend service deployment)
+5. [Front-end application deployment](#5-Front-end application deployment)
+6. [Nginx configuration](#6-nginx-configuration)
+7. [Security Configuration](#7-Security Configuration)
+8. [Monitoring and Maintenance](#8-Monitoring and Maintenance)
+9. [FAQ](#9-FAQ)
 
-## 1. 环境准备
+## 1. Environment preparation
 
-### 1.1 更新系统
+### 1.1 Update system
 
 ```bash
 sudo apt update
 sudo apt upgrade -y
 ```
 
-### 1.2 安装基本工具
+### 1.2 Install basic tools
 
 ```bash
 sudo apt install -y curl gnupg wget git vim build-essential net-tools
 ```
 
-### 1.3 配置防火墙
+### 1.3 Configure firewall
 
 ```bash
 sudo apt install -y ufw
@@ -39,7 +39,7 @@ sudo ufw allow https
 sudo ufw enable
 ```
 
-### 1.4 安装 Node.js
+### 1.4 Install Node.js
 
 ```bash
 # Download and install fnm:
@@ -54,162 +54,162 @@ node -v # Should print "v22.14.0".
 # Verify npm version:
 npm -v # Should print "10.9.2".
 
-# 安装 PM2 进程管理器
+# Install PM2 process manager
 sudo npm install -g pm2
 ```
 
-## 2. MongoDB 数据库部署
+## 2. MongoDB database deployment
 
-### 2.1 安装 MongoDB
+### 2.1 Install MongoDB
 
 ```bash
-# 导入 MongoDB GPG 密钥
+# Import MongoDB GPG key
 curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
    sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
    --dearmor
 
-# 添加 MongoDB 源
+# Add MongoDB source
 echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] http://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
 
-# 更新包索引并安装 MongoDB
+# Update package index and install MongoDB
 sudo apt update
 sudo apt install -y mongodb-org
 ```
 
-### 2.2 启动 MongoDB
+### 2.2 Start MongoDB
 
-默认情况下，MongoDB 实例存储：
-数据文件在 /var/lib/mongodb 中
-日志文件位于 /var/log/mongodb
+By default, MongoDB instances store:
+Data files are in /var/lib/mongodb
+The log file is located at /var/log/mongodb
 
 ```bash
-# 启动 MongoDB 服务
+# Start the MongoDB service
 sudo systemctl enable mongod
 sudo systemctl start mongod
 ```
 
-### 2.3 MongoDB 安全配置
+### 2.3 MongoDB security configuration
 
 ```bash
-# 创建管理员用户
+#Create admin user
 mongosh admin --eval '
   db.createUser({
     user: "admin",
-    pwd: "强密码请修改",
+pwd: "Please change the strong password",
     roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
   })
 '
 
-# 创建应用数据库用户
-mongosh admin -u admin -p '强密码请修改' --eval '
+#Create application database user
+mongosh admin -u admin -p 'Please change the strong password' --eval '
   db.getSiblingDB("jobtrip").createUser({
     user: "jobtripapp",
-    pwd: "应用密码请修改",
+pwd: "Please change the application password",
     roles: [ { role: "readWrite", db: "jobtrip" } ]
   })
 '
 ```
 
-### 2.4 配置 MongoDB 认证
+### 2.4 Configure MongoDB authentication
 
 ```bash
-# 编辑 MongoDB 配置文件
+# Edit MongoDB configuration file
 sudo vim /etc/mongod.conf
 ```
 
-修改配置文件:
+Modify configuration file:
 
 ```yaml
-# 网络设置
+# Network settings
 net:
   port: 27017
   bindIp: 127.0.0.1
 
-# 安全设置
+# Security settings
 security:
   authorization: enabled
 ```
 
-重启 MongoDB 服务:
+Restart the MongoDB service:
 
 ```bash
 sudo systemctl restart mongod
 ```
 
-### 2.5 MongoDB 备份配置
+### 2.5 MongoDB backup configuration
 
-创建备份脚本:
+Create backup script:
 
 ```bash
 sudo mkdir -p /opt/scripts
 sudo vim /opt/scripts/mongodb-backup.sh
 ```
 
-添加以下内容:
+Add the following:
 
 ```bash
 #!/bin/bash
 DATE=$(date +%Y%m%d)
 BACKUP_DIR="/opt/backups/mongodb"
 
-# 创建备份目录
+#Create backup directory
 mkdir -p $BACKUP_DIR
 
-# 执行备份
-mongodump --uri="mongodb://jobtripapp:应用密码请修改@127.0.0.1:27017/jobtrip" --out="$BACKUP_DIR/$DATE"
+# Perform backup
+mongodump --uri="mongodb://jobtripapp:Please change the application password @127.0.0.1:27017/jobtrip" --out="$BACKUP_DIR/$DATE"
 
-# 保留最近7天的备份
+# Keep backups of the last 7 days
 find $BACKUP_DIR -type d -mtime +7 -exec rm -rf {} \;
 ```
 
-设置权限:
+Set permissions:
 
 ```bash
 sudo chmod +x /opt/scripts/mongodb-backup.sh
 ```
 
-添加到定时任务:
+Add to scheduled tasks:
 
 ```bash
 echo "0 2 * * * /opt/scripts/mongodb-backup.sh" | sudo tee -a /etc/crontab
 ```
 
-## 3. Redis 缓存部署（可选）
+## 3. Redis cache deployment (optional)
 
-### 3.1 安装 Redis
+### 3.1 Install Redis
 
 ```bash
 sudo apt install -y redis-server
 ```
 
-### 3.2 配置 Redis
+### 3.2 Configure Redis
 
-编辑配置文件:
+Edit configuration file:
 
 ```bash
 sudo vim /etc/redis/redis.conf
 ```
 
-修改以下设置:
+Modify the following settings:
 
 ```
-# 监听地址改为本地
+# Change the listening address to local
 bind 127.0.0.1
-# 设置密码
-requirepass 强密码请修改
-# 启用持久化
+# Set password
+Please change requirepass strong password
+# Enable persistence
 appendonly yes
 ```
 
-重启 Redis:
+Restart Redis:
 
 ```bash
 sudo systemctl restart redis-server
 ```
 
-## 4. 后端服务部署
+## 4. Backend service deployment
 
-### 4.1 克隆项目代码
+### 4.1 Clone project code
 
 ```bash
 cd /var/www
@@ -219,58 +219,58 @@ git clone https://github.com/your-organization/jobtrip-backend.git jobtrip/backe
 cd jobtrip/backend
 ```
 
-### 4.2 安装依赖
+### 4.2 Install dependencies
 
 ```bash
 npm install
 ```
 
-### 4.3 配置环境变量
+### 4.3 Configure environment variables
 
-创建 .env 文件:
+Create .env file:
 
 ```bash
 vim .env
 ```
 
-添加以下配置:
+Add the following configuration:
 
 ```
-# 服务器配置
+# Server configuration
 PORT=8080
 NODE_ENV=production
 
-# 数据库配置
-MONGODB_URI=mongodb://jobtripapp:应用密码请修改@127.0.0.1:27017/jobtrip?authSource=admin
+# Database configuration
+MONGODB_URI=mongodb://jobtripapp:Please change the application password @127.0.0.1:27017/jobtrip?authSource=admin
 
-# JWT配置
-JWT_SECRET=生成随机字符串替换此处
+# JWT configuration
+JWT_SECRET=Generate random string to replace here
 JWT_EXPIRES_IN=7d
 
-# Redis配置 (如果使用)
+# Redis configuration (if used)
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
-REDIS_PASSWORD=强密码请修改
+REDIS_PASSWORD=Please change the strong password
 
-# 日志配置
+# Log configuration
 LOG_LEVEL=info
 ```
 
-### 4.4 构建应用
+### 4.4 Building the application
 
 ```bash
 npm run build
 ```
 
-### 4.5 使用 PM2 启动服务
+### 4.5 Use PM2 to start the service
 
-创建 PM2 配置文件:
+Create PM2 configuration file:
 
 ```bash
 vim ecosystem.config.js
 ```
 
-添加以下内容:
+Add the following:
 
 ```javascript
 module.exports = {
@@ -289,7 +289,7 @@ module.exports = {
 };
 ```
 
-启动服务:
+Start the service:
 
 ```bash
 pm2 start ecosystem.config.js
@@ -297,9 +297,9 @@ pm2 save
 pm2 startup debian
 ```
 
-## 5. 前端应用部署
+## 5. Front-end application deployment
 
-### 5.1 克隆前端代码
+### 5.1 Clone front-end code
 
 ```bash
 cd /var/www/jobtrip
@@ -307,53 +307,53 @@ git clone https://github.com/your-organization/jobtrip-frontend.git frontend
 cd frontend
 ```
 
-### 5.2 安装依赖和构建
+### 5.2 Install dependencies and build
 
 ```bash
 npm install
 ```
 
-### 5.3 环境变量配置
+### 5.3 Environment variable configuration
 
-创建 .env.production 文件:
+Create .env.production file:
 
 ```bash
 vim .env.production
 ```
 
-添加以下内容:
+Add the following:
 
 ```
 REACT_APP_API_URL=https://yourdomain.com/api
 REACT_APP_ENV=production
 ```
 
-### 5.4 构建应用
+### 5.4 Building the application
 
 ```bash
 npm run build
 ```
 
-## 6. Nginx 配置
+## 6. Nginx configuration
 
-### 6.1 安装 Nginx
+### 6.1 Install Nginx
 
 ```bash
 sudo apt install -y nginx
 ```
 
-### 6.2 配置 Nginx
+### 6.2 Configure Nginx
 
-创建配置文件:
+Create configuration file:
 
 ```bash
 sudo vim /etc/nginx/sites-available/jobtrip
 ```
 
-添加以下内容:
+Add the following:
 
 ```nginx
-# 后端API服务
+# Backend API service
 upstream backend_servers {
     server 127.0.0.1:8080;
 }
@@ -362,7 +362,7 @@ server {
     listen 80;
     server_name yourdomain.com;
 
-    # 重定向到HTTPS
+# Redirect to HTTPS
     location / {
         return 301 https://$host$request_uri;
     }
@@ -372,26 +372,26 @@ server {
     listen 443 ssl;
     server_name yourdomain.com;
 
-    # SSL证书配置
+# SSL certificate configuration
     ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
 
-    # 安全相关头信息
+# Security related header information
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
     add_header X-Content-Type-Options "nosniff";
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 
-    # 前端应用
+# Front-end application
     location / {
         root /var/www/jobtrip/frontend/build;
         index index.html;
         try_files $uri $uri/ /index.html;
     }
 
-    # API请求代理
+# API request proxy
     location /api/ {
         proxy_pass http://backend_servers/;
         proxy_http_version 1.1;
@@ -404,7 +404,7 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 
-    # 静态资源缓存
+# Static resource cache
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
         root /var/www/jobtrip/frontend/build;
         expires 30d;
@@ -414,7 +414,7 @@ server {
 }
 ```
 
-启用配置:
+Enable configuration:
 
 ```bash
 sudo ln -s /etc/nginx/sites-available/jobtrip /etc/nginx/sites-enabled/
@@ -422,31 +422,31 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-### 6.3 配置 SSL 证书
+### 6.3 Configure SSL certificate
 
-使用 Certbot 获取 SSL 证书:
+Use Certbot to obtain an SSL certificate:
 
 ```bash
 sudo apt install -y certbot python3-certbot-nginx
 sudo certbot --nginx -d yourdomain.com
 ```
 
-## 7. 安全配置
+## 7. Security configuration
 
-### 7.1 配置自动更新
+### 7.1 Configure automatic updates
 
 ```bash
 sudo apt install -y unattended-upgrades
 sudo dpkg-reconfigure -plow unattended-upgrades
 ```
 
-### 7.2 配置日志轮转
+### 7.2 Configure log rotation
 
 ```bash
 sudo vim /etc/logrotate.d/jobtrip
 ```
 
-添加以下内容:
+Add the following:
 
 ```
 /var/www/jobtrip/backend/logs/*.log {
@@ -460,7 +460,7 @@ sudo vim /etc/logrotate.d/jobtrip
 }
 ```
 
-### 7.3 设置文件权限
+### 7.3 Set file permissions
 
 ```bash
 sudo chown -R www-data:www-data /var/www/jobtrip
@@ -468,163 +468,163 @@ sudo find /var/www/jobtrip -type d -exec chmod 755 {} \;
 sudo find /var/www/jobtrip -type f -exec chmod 644 {} \;
 ```
 
-## 8. 监控和维护
+## 8. Monitoring and Maintenance
 
-### 8.1 安装监控工具
+### 8.1 Install monitoring tools
 
 ```bash
-# 安装 Prometheus Node Exporter
+# Install Prometheus Node Exporter
 sudo apt install -y prometheus-node-exporter
 
-# 安装 MongoDB Exporter
+# Install MongoDB Exporter
 sudo apt install -y prometheus-mongodb-exporter
 ```
 
-### 8.2 日志监控
+### 8.2 Log monitoring
 
 ```bash
-# 查看后端日志
+# View backend logs
 pm2 logs jobtrip-backend
 
-# 查看 MongoDB 日志
+# View MongoDB logs
 sudo tail -f /var/log/mongodb/mongod.log
 
-# 查看 Nginx 日志
+# View Nginx logs
 sudo tail -f /var/log/nginx/error.log
 sudo tail -f /var/log/nginx/access.log
 ```
 
-### 8.3 创建系统健康检查脚本
+### 8.3 Create system health check script
 
 ```bash
 sudo vim /opt/scripts/system-health.sh
 ```
 
-添加以下内容:
+Add the following:
 
 ```bash
 #!/bin/bash
 
-# 检查服务状态
+# Check service status
 SERVICE_STATUS=$(systemctl is-active mongod redis-server nginx)
 if [[ $SERVICE_STATUS == *"inactive"* ]]; then
-    echo "警告: 有服务未运行: $SERVICE_STATUS"
+echo "Warning: There is a service not running: $SERVICE_STATUS"
 fi
 
-# 检查磁盘空间
+# Check disk space
 DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}' | sed 's/%//')
 if [ $DISK_USAGE -gt 80 ]; then
-    echo "警告: 磁盘使用率超过 80%: $DISK_USAGE%"
+echo "Warning: Disk usage exceeds 80%: $DISK_USAGE%"
 fi
 
-# 检查 MongoDB 连接
-mongo_status=$(mongosh admin --quiet --eval "db.serverStatus().connections.current" || echo "无法连接")
-if [[ "$mongo_status" == "无法连接" ]]; then
-    echo "警告: MongoDB 连接失败"
+# Check MongoDB connection
+mongo_status=$(mongosh admin --quiet --eval "db.serverStatus().connections.current" || echo "Unable to connect")
+if [[ "$mongo_status" == "Unable to connect" ]]; then
+echo "Warning: MongoDB connection failed"
 fi
 
-# 检查后端服务
+# Check backend services
 if ! pm2 list | grep -q "jobtrip-backend"; then
-    echo "警告: 后端服务未运行"
+echo "Warning: Backend service is not running"
 fi
 ```
 
-设置执行权限并添加到定时任务:
+Set execution permissions and add to scheduled tasks:
 
 ```bash
 sudo chmod +x /opt/scripts/system-health.sh
-echo "0 * * * * /opt/scripts/system-health.sh | mail -s '系统健康检查' admin@youremail.com" | sudo tee -a /etc/crontab
+echo "0 * * * * /opt/scripts/system-health.sh | mail -s 'System Health Check' admin@youremail.com" | sudo tee -a /etc/crontab
 ```
 
-## 9. 常见问题排查
+## 9. Troubleshooting common problems
 
-### 9.1 MongoDB 连接问题
+### 9.1 MongoDB connection issues
 
-如果后端无法连接 MongoDB:
+If the backend cannot connect to MongoDB:
 
-1. 检查 MongoDB 服务状态:
+1. Check MongoDB service status:
    ```bash
    sudo systemctl status mongod
    ```
 
-2. 确认端口监听:
+2. Confirm port listening:
    ```bash
    sudo ss -tulpn | grep 27017
    ```
 
-3. 测试数据库连接:
+3. Test database connection:
    ```bash
-   mongosh mongodb://jobtripapp:密码@127.0.0.1:27017/jobtrip?authSource=admin
+mongosh mongodb://jobtripapp:password@127.0.0.1:27017/jobtrip?authSource=admin
    ```
 
-### 9.2 后端服务无法启动
+### 9.2 The backend service cannot be started
 
-1. 检查日志:
+1. Check the log:
    ```bash
    pm2 logs jobtrip-backend
    ```
 
-2. 验证环境变量:
+2. Verify environment variables:
    ```bash
    pm2 env jobtrip-backend
    ```
 
-3. 检查依赖安装:
+3. Check dependency installation:
    ```bash
    cd /var/www/jobtrip/backend
    npm ls
    ```
 
-### 9.3 前端应用问题
+### 9.3 Front-end application issues
 
-1. 验证 Nginx 配置:
+1. Verify Nginx configuration:
    ```bash
    sudo nginx -t
    ```
 
-2. 检查文件权限:
+2. Check file permissions:
    ```bash
    ls -la /var/www/jobtrip/frontend/build
    ```
 
-3. 查看 Nginx 错误日志:
+3. View Nginx error log:
    ```bash
    sudo tail -f /var/log/nginx/error.log
    ```
 
-## 开发环境配置
+## Development environment configuration
 
-### 开发环境局域网访问
+### Development environment LAN access
 
-如果需要在局域网内的其他设备上访问开发服务器，请按以下步骤操作：
+If you need to access the development server from other devices within the LAN, follow these steps:
 
-1. 在后端配置文件`.env`中设置：
+1. Set in the backend configuration file `.env`:
    ```
    HOST=0.0.0.0
    ```
 
-2. 确保服务器的防火墙允许相应端口的入站连接：
-   - 后端API服务默认端口：5000
-   - 前端开发服务默认端口：3000
+2. Make sure the server's firewall allows inbound connections on the appropriate port:
+   - Backend API service default port: 5000
+   - Front-end development service default port: 3000
 
-3. 获取服务器的IP地址（例如：192.168.1.132）
+3. Get the IP address of the server (for example: 192.168.1.132)
 
-4. 在局域网内的其他设备上，通过浏览器访问：
+4. On other devices within the LAN, access through a browser:
    ```
-   http://192.168.1.132:5000  # 后端API服务
-   http://192.168.1.132:3000  # 前端开发服务
+http://192.168.1.132:5000 # Backend API service
+http://192.168.1.132:3000 # Front-end development service
    ```
 
-5. API文档可以通过以下地址访问：
+5. API documentation can be accessed at:
    ```
    http://192.168.1.132:5000/api-docs  # Swagger UI
-   http://192.168.1.132:5000/docs      # ReDoc（推荐）
+http://192.168.1.132:5000/docs # ReDoc (recommended)
    ```
 
-注意：
-- 如果使用了不同端口，请相应调整访问URL
-- 如果服务器正在运行，需要重启服务才能应用新的HOST配置
+Notice:
+- If a different port is used, please adjust the access URL accordingly
+- If the server is running, the service needs to be restarted to apply the new HOST configuration
 
 ---
 
-本部署指南提供了在 Debian 12 服务器上部署 JobTrip 职途助手的基本步骤。根据实际项目需求，可能需要进行额外的配置和调整。请确保在生产环境中使用强密码并遵循安全最佳实践。 
+This deployment guide provides basic steps for deploying JobTrip Career Assistant on a Debian 12 server. Additional configuration and adjustments may be required based on actual project needs. Be sure to use strong passwords and follow security best practices in your production environment.

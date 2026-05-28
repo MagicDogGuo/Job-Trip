@@ -1,141 +1,141 @@
-# JobTrip 职途助手前端需求文档
+# JobTrip career assistant front-end requirements document
 
-## 1. 技术栈
+## 1. Technology stack
 - React.js
 - Material-UI (MUI)
 - TypeScript
 - Axios
 - React Router
-- Redux/Context API (状态管理)
+- Redux/Context API (state management)
 
-## 2. 功能需求
+## 2. Functional requirements
 
-### 2.1 用户界面
-#### 2.1.1 布局设计
-- 响应式设计，支持移动端和桌面端
-- 清晰的导航结构
-- 统一的主题风格
-- 支持深色/浅色模式切换
+### 2.1 User interface
+#### 2.1.1 Layout design
+- Responsive design, supports mobile and desktop
+- Clear navigation structure
+- Unified theme style
+- Support dark/light mode switching
 
-#### 2.1.2 页面组件
-- 登录/注册页面
-- 仪表板页面
-- 职位列表页面
-- 职位详情页面
-- 个人设置页面
-- 数据统计页面
+#### 2.1.2 Page components
+- Login/registration page
+- Dashboard page
+- Job Listing Page
+- Job details page
+- Personal settings page
+- Statistics page
 
-### 2.2 核心功能
-#### 2.2.1 职位管理
-- 职位列表展示
-  - 支持分页
-  - 支持排序（按日期、状态等）
-  - 支持筛选（按状态、公司、地点等）
-  - 支持搜索
-- 职位详情展示
-  - 完整职位信息
-  - 申请状态追踪
-  - 相关操作按钮
-- 职位状态管理
-  - 支持状态更新
-  - 状态变更历史记录
-  - 状态统计展示
+### 2.2 Core functions
+#### 2.2.1 Position management
+- Job list display
+  - Support paging
+  - Supports sorting (by date, status, etc.)
+  - Supports filtering (by status, company, location, etc.)
+  - Support search
+- Job details display
+  - Complete job information
+  - Application status tracking
+  - Related action buttons
+- Position status management
+  - Support status updates
+  - Status change history
+  - Status statistics display
 
-#### 2.2.2 数据可视化
-- 申请状态分布图表
-- 时间线展示
-- 公司分布统计
-- 职位类型分布
+#### 2.2.2 Data visualization
+- Application status distribution chart
+- Timeline display
+- Company distribution statistics
+- Position type distribution
 
-#### 2.2.3 用户功能
-- 用户认证
-  - 登录/注册
-  - 密码重置
-  - 第三方登录集成
-- 个人设置
-  - 个人信息管理
-  - 偏好设置
-  - 通知设置
+#### 2.2.3 User functions
+- User authentication
+  - Login/Register
+  - Password reset
+  - Third-party login integration
+- personal settings
+  - Personal information management
+  - Preferences
+  - Notification settings
 
-### 2.3 浏览器扩展
-- 职位信息采集界面
-- 快速操作菜单
-- 状态更新功能
-- 数据同步状态显示
+### 2.3 Browser extensions
+- Job information collection interface
+- Quick action menu
+- status update function
+- Data synchronization status display
 
-## 3. 非功能需求
+## 3. Non-functional requirements
 
-### 3.1 性能需求
-- 页面加载时间 < 3秒
-- 首次内容渲染 < 1.5秒
-- 支持离线功能
-- 实现数据缓存
+### 3.1 Performance requirements
+- Page load time < 3 seconds
+- First content render < 1.5 seconds
+- Support offline function
+- Implement data caching
 
-### 3.2 安全需求
-- 实现 CSRF 防护
-- 敏感数据加密
-- 安全的用户认证
-- 输入数据验证
+### 3.2 Security requirements
+- Implement CSRF protection
+- Sensitive data encryption
+- Secure user authentication
+- Input data validation
 
-### 3.3 可用性需求
-- 直观的用户界面
-- 清晰的操作反馈
-- 完善的错误提示
-- 操作引导和帮助文档
+### 3.3 Availability requirements
+- Intuitive user interface
+- Clear operational feedback
+- Perfect error message
+- Operation guide and help documentation
 
-### 3.4 兼容性需求
-- 支持主流浏览器（Chrome）
-- 支持移动端访问
-- 支持不同分辨率
+### 3.4 Compatibility requirements
+- Support mainstream browsers (Chrome)
+- Support mobile access
+- Support different resolutions
 
-## 4. 开发规范
+## 4. Development specifications
 
-### 4.1 代码规范
-- 使用 TypeScript 进行开发
-- 遵循 ESLint 和 Prettier 配置
-- 组件化开发
-- 统一的命名规范
+### 4.1 Code specifications
+- Develop with TypeScript
+- Follow ESLint and Prettier configuration
+- Component development
+- Unified naming convention
 
-### 4.2 测试要求
-- 单元测试覆盖率 > 80%
-- 集成测试
-- 端到端测试
-- 性能测试
+### 4.2 Test requirements
+- Unit test coverage > 80%
+- Integration testing
+- End-to-end testing
+- Performance testing
 
-### 4.3 文档要求
-- 组件文档
-- API 接口文档
-- 部署文档
-- 用户使用手册
+### 4.3 Documentation requirements
+- Component documentation
+- API interface documentation
+- Deployment documentation
+- User manual
 
-## 5. 项目里程碑
+## 5. Project Milestones
 
-### 5.1 第一阶段（基础框架）
-- 项目初始化
-- 基础组件开发
-- 路由配置
-- 状态管理设置
+### 5.1 The first stage (basic framework)
+- Project initialization
+- Basic component development
+- Routing configuration
+- Status management settings
 
-### 5.2 第二阶段（核心功能）
-- 职位管理功能
-- 用户认证系统
-- 数据可视化
-- 浏览器扩展开发
+### 5.2 Phase 2 (Core Functions)
+- Position management function
+- User authentication system
+- data visualization
+- Browser extension development
 
-### 5.3 第三阶段（优化完善）
-- 性能优化
-- UI/UX 改进
-- 测试完善
-- 文档编写
+### 5.3 The third stage (optimization and improvement)
+- Performance optimization
+- UI/UX improvements
+- Tested and perfected
+- Documentation
 
-## 6. 风险评估
+## 6. Risk assessment
 
-### 6.1 技术风险
-- 浏览器兼容性问题
-- 性能优化挑战
-- 状态管理复杂性
+### 6.1 Technical risks
+- Browser compatibility issues
+- Performance optimization challenges
+- State management complexity
 
-### 6.2 解决方案
-- 充分的浏览器测试
-- 性能监控和优化
-- 合理的技术选型 
+### 6.2 Solution
+- Adequate browser testing
+- Performance monitoring and optimization
+- Reasonable technology selection

@@ -1,10 +1,10 @@
 # Project Proposal
 
-# JobTrip 职途助手 - Smart Job Tracking Extension and System
+#JobTrip Career Assistant - Smart Job Tracking Extension and System
 
 ## Introduction
 
-Our team is developing a browser extension and web application called "JobTrip 职途助手" for the New Zealand job market. This system will help job seekers manage their job search more easily. It has three main functions:
+Our team is developing a browser extension and web application called "JobTrip Career Assistant" for the New Zealand job market. This system will help job seekers manage their job search more easily. It has three main functions:
 
 - Automatically collect job information from popular job websites like LinkedIn, Indeed, and Seek.
 - Provide a central platform to manage job applications.
