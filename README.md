@@ -10,7 +10,9 @@ JobTrip is an intelligent job application tracking system designed to help job s
 
 ### Default Users
 
-**User**
+Use the account to try the demo:
+
+1.  **User**
     *   account: `johndoe`
     *   Password: `404notfound`
 
