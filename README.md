@@ -8,6 +8,12 @@ JobTrip is an intelligent job application tracking system designed to help job s
 
 🔗 Live Demo: [https://jobtrip.draven.best/](https://jobtrip.draven.best/)
 
+### Default Users
+
+User
+Email: johndoe
+Password: 404notfound
+
 ### Screenshots
 
 Landing
