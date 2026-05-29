@@ -4,19 +4,6 @@ English | [中文版](README.zh.md)
 
 JobTrip is an intelligent job application tracking system designed to help job seekers manage their job search process more effectively. The system includes a browser extension and web application that can automatically collect job information from mainstream recruitment platforms, providing a centralized platform for managing applications and helping users organize and track their job search process efficiently.
 
-## Project Overview
-
-JobTrip provides a one-stop solution for job seekers in the New Zealand job market, with the following key features:
-
-- Automatically collect job information from popular recruitment websites like LinkedIn, Indeed, and Seek
-- Provide a centralized platform to manage all job applications
-- **Personalized job status tracking system** allowing each user to independently manage the status of positions they're interested in
-- **Real-time status updates** that don't require page refreshes, enhancing user experience
-- **Historical status records** documenting status changes for easy review of the application process
-- Automatic user association when manually adding jobs, enabling seamless integration
-- Provide data analysis and job search advice
-
-
 ## Online Demo
 
 🔗 Live Demo: [https://jobtrip.draven.best/](https://jobtrip.draven.best/)
@@ -37,6 +24,16 @@ JobTrip provides a one-stop solution for job seekers in the New Zealand job mark
 ![Job Tracking](https://github.com/user-attachments/assets/acfd1185-28df-4bcd-b95e-173bd8fef576)
 
 ## Key Features
+
+JobTrip provides a one-stop solution for job seekers in the New Zealand job market, with the following key features:
+
+- Automatically collect job information from popular recruitment websites like LinkedIn, Indeed, and Seek
+- Provide a centralized platform to manage all job applications
+- **Personalized job status tracking system** allowing each user to independently manage the status of positions they're interested in
+- **Real-time status updates** that don't require page refreshes, enhancing user experience
+- **Historical status records** documenting status changes for easy review of the application process
+- Automatic user association when manually adding jobs, enabling seamless integration
+- Provide data analysis and job search advice
 
 ### User Management
 
