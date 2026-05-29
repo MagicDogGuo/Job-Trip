@@ -4,24 +4,6 @@ English | [中文版](README.zh.md)
 
 JobTrip is an intelligent job application tracking system designed to help job seekers manage their job search process more effectively. The system includes a browser extension and web application that can automatically collect job information from mainstream recruitment platforms, providing a centralized platform for managing applications and helping users organize and track their job search process efficiently.
 
-## Online Demo
-
-🔗 Live Demo: [https://jobtrip.draven.best/](https://jobtrip.draven.best/)
-
-### Default Users
-
-User
-Email: johndoe
-Password: 404notfound
-
-### Screenshots
-
-Landing
-Login
-Welcome
-Job List
-Job Tracking
-
 ## Project Overview
 
 JobTrip provides a one-stop solution for job seekers in the New Zealand job market, with the following key features:
@@ -33,6 +15,57 @@ JobTrip provides a one-stop solution for job seekers in the New Zealand job mark
 - **Historical status records** documenting status changes for easy review of the application process
 - Automatic user association when manually adding jobs, enabling seamless integration
 - Provide data analysis and job search advice
+
+
+## Online Demo
+
+🔗 Live Demo: [https://jobtrip.draven.best/](https://jobtrip.draven.best/)
+
+### Default Users
+
+**User**
+    *   account: `johndoe`
+    *   Password: `404notfound`
+
+
+### Screenshots
+
+![Landing](https://github.com/user-attachments/assets/eb2d179b-bd1f-4360-8c66-9907bd513e89)
+![Login](https://github.com/user-attachments/assets/cdd83bfe-fecc-46de-9ba5-62ac5a48035e)
+![Welcome](https://github.com/user-attachments/assets/b8b53ea8-3f9e-4b8a-9a3e-92c0db6804ec)
+![Job List](https://github.com/user-attachments/assets/7007b4a3-da40-4587-9068-1e8f35154088)
+![Job Tracking](https://github.com/user-attachments/assets/acfd1185-28df-4bcd-b95e-173bd8fef576)
+
+## Key Features
+
+### User Management
+
+- User registration and login
+- Personal profile management
+- Password updates
+
+### Job Management
+
+- Retrieve job listings
+- Create, view, update, and delete jobs
+- Job search and filtering
+- Automatic user association when **manually adding jobs**, no additional operations required
+- **Job detail page** displays and updates job status, reflecting the latest status in real-time
+
+### Company Management
+
+- Retrieve company lists
+- Create, view, update, and delete company information
+
+### User-Job Association
+
+- **Personalized status tracking**: Each user independently manages the status of jobs they're interested in
+- **Multi-status support**: Supporting statuses like new job, applied, interviewing, hired, rejected, etc.
+- **Real-time status updates**: Frontend independent state management avoids page refreshes
+- **Status history records**: Records all status changes for easy review of the application process
+- **Smart data statistics**: Count jobs by status and provide visual reports
+
+
 
 ## Tech Stack
 
@@ -63,7 +96,7 @@ JobTrip provides a one-stop solution for job seekers in the New Zealand job mark
 - Web Scraping Technology
 - Extension introduction: [JobTrip_Extention/README.md](JobTrip_Extention/README.md)
 
-## System Architecture
+## System Overview
 
 Single integrated view of how the **Chrome Extension**, **frontend**, and **backend** connect during job export:
 
@@ -255,34 +288,6 @@ cd backend
 npm run generate-docs
 ```
 
-## Key Features
-
-### User Management
-
-- User registration and login
-- Personal profile management
-- Password updates
-
-### Job Management
-
-- Retrieve job listings
-- Create, view, update, and delete jobs
-- Job search and filtering
-- Automatic user association when **manually adding jobs**, no additional operations required
-- **Job detail page** displays and updates job status, reflecting the latest status in real-time
-
-### Company Management
-
-- Retrieve company lists
-- Create, view, update, and delete company information
-
-### User-Job Association
-
-- **Personalized status tracking**: Each user independently manages the status of jobs they're interested in
-- **Multi-status support**: Supporting statuses like new job, applied, interviewing, hired, rejected, etc.
-- **Real-time status updates**: Frontend independent state management avoids page refreshes
-- **Status history records**: Records all status changes for easy review of the application process
-- **Smart data statistics**: Count jobs by status and provide visual reports
 
 ## Project Structure
 
