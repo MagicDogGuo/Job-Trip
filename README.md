@@ -24,6 +24,9 @@ Use the account to try the demo:
 ![Welcome](https://github.com/user-attachments/assets/b8b53ea8-3f9e-4b8a-9a3e-92c0db6804ec)
 ![Job List](https://github.com/user-attachments/assets/7007b4a3-da40-4587-9068-1e8f35154088)
 ![Job Tracking](https://github.com/user-attachments/assets/acfd1185-28df-4bcd-b95e-173bd8fef576)
+<img width="1500" height="807" alt="LinkedinEx" src="https://github.com/user-attachments/assets/77e69c59-5c03-4a8a-8da6-0edeadb926eb" />
+<img width="1500" height="773" alt="Extension" src="https://github.com/user-attachments/assets/c79720bb-1906-4a15-87e4-869ea05c87ac" />
+
 
 ## Key Features
 
