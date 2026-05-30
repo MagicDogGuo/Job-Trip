@@ -98,6 +98,8 @@ JobTrip provides a one-stop solution for job seekers in the New Zealand job mark
 - Web Scraping Technology
 - Extension introduction: [JobTrip_Extention/README.md](JobTrip_Extention/README.md)
 
+
+
 ## System Overview
 
 Single integrated view of how the **Chrome Extension**, **frontend**, and **backend** connect during job export:
@@ -189,8 +191,6 @@ sequenceDiagram
     P->>FE: Open jobs page tab
 ```
 
-Static export (optional): [source/Extension+backendFlow.svg](source/Extension+backendFlow.svg)
-
 **Flow:** Extension scrapes jobs → reads frontend JWT → `POST /api/v1/jobs` → writes `jobs` + `userjobs` → opens frontend `/jobs`.
 
 The project adopts a frontend-backend separation architecture:
@@ -206,6 +206,11 @@ The project adopts a frontend-backend separation architecture:
 3. **Browser Extension**:
   - Implements automatic collection of job information from recruitment websites
   - Seamless integration with the main system
+
+## Architecture
+
+📐 **System architecture diagrams** (overview, frontend, backend): [docs/architecture.md](docs/architecture.md)
+
 
 ## Installation and Running
 
@@ -329,7 +334,7 @@ npm run generate-docs
 │   └── package.json         # Project dependencies
 │
 └── docs/                    # Project documentation
-    ├── architecture-extension-backend.md   # Extension ↔ backend architecture
+    ├── architecture.md            # System architecture (overview, frontend, backend)
     ├── backend-requirements.md    # Backend requirements document
     ├── database-requirements.md   # Database requirements document
     ├── deployment-guide.md        # Deployment guide

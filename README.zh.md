@@ -55,6 +55,8 @@ JobTrip为新西兰就业市场的求职者提供了一站式解决方案，具�
 
 ## 系统架构
 
+📐 **系统架构图**（总览、前端、后端）：[docs/architecture.md](docs/architecture.md)
+
 项目采用前后端分离的架构：
 
 1. **前端**：
@@ -208,6 +210,7 @@ npm run generate-docs
 │   └── package.json         # 项目依赖
 │
 └── docs/                    # 项目文档
+    ├── architecture.md            # 系统架构图（总览、前端、后端）
     ├── backend-requirements.md    # 后端需求文档
     ├── database-requirements.md   # 数据库需求文档
     ├── deployment-guide.md        # 部署指南
