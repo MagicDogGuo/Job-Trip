@@ -209,7 +209,7 @@ The project adopts a frontend-backend separation architecture:
 
 ## Architecture
 
-📐 **System architecture diagrams** (overview, frontend, backend): [docs/architecture.md](docs/architecture.md)
+**System architecture diagrams** (overview, frontend, backend): [docs/architecture.md](docs/architecture.md)
 
 
 ## Installation and Running

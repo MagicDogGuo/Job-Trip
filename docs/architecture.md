@@ -45,7 +45,7 @@ flowchart TB
     subgraph BE[Backend :5001]
         EXPRESS[Express App]
         MW[Middleware<br/>CORS / Helmet / RateLimit / Auth]
-        ROUTES[REST Routes /api/v1/*]
+        ROUTES["REST Routes api/v1"]
         CTRL[Controllers]
         EXPRESS --> MW --> ROUTES --> CTRL
     end
@@ -144,27 +144,27 @@ flowchart TB
     end
 
     subgraph Routing[Routing Layer]
-        ROUTES[routes/index.tsx]
+        ROUTES["routes/index.tsx"]
         PROTECT[ProtectedRoute]
-        LAYOUT[Layout / Sidebar]
+        LAYOUT["Layout and Sidebar"]
         ROUTES --> PROTECT --> LAYOUT
     end
 
     subgraph Pages[Pages Layer]
         LANDING[LandingPage]
-        AUTH[Login / Register]
+        AUTH["Login and Register"]
         DASH[DashboardPage]
-        JOBS[JobsPage / JobDetailPage]
+        JOBS["JobsPage and JobDetailPage"]
         PROFILE[ProfilePage]
-        RESUME[ResumeBuilder / ResumeForm]
-        OTHER[Welcome / Settings / CoverLetter]
+        RESUME["ResumeBuilder and ResumeForm"]
+        OTHER["Welcome, Settings, CoverLetter"]
     end
 
     subgraph Components[Components Layer]
-        COMMON[common/ shared components]
-        DASH_C[dashboard/ drag-and-drop board]
-        PROFILE_C[profile/ user profile]
-        LANDING_C[landing/ landing page sections]
+        COMMON["common shared components"]
+        DASH_C["dashboard drag-and-drop"]
+        PROFILE_C["profile user profile"]
+        LANDING_C["landing page sections"]
     end
 
     subgraph State[State Layer Redux]
@@ -179,7 +179,7 @@ flowchart TB
     subgraph Services[Services Layer]
         API[api.ts Axios instance]
         AUTH_SVC[authService]
-        JOB_SVC[jobService / userJobService]
+        JOB_SVC["jobService and userJobService"]
         CO_SVC[companyService]
         RES_SVC[resumeService]
         AI_SVC[aiService]
@@ -193,7 +193,7 @@ flowchart TB
     Pages --> State
     State --> Services
     Services --> API
-    API -->|Bearer JWT| BE_API[Backend /api/v1]
+    API -->|Bearer JWT| BE_API["Backend api/v1"]
 ```
 
 ### 2.2 Directory Structure
@@ -269,14 +269,14 @@ flowchart TB
         ERR_MW[errorHandler]
     end
 
-    subgraph Routes[Routes Layer /api/v1]
-        R_USERS[/users]
-        R_JOBS[/jobs]
-        R_CO[/companies]
-        R_UJ[/userjobs]
-        R_RES[/resumes]
-        R_AI[/ai]
-        R_PROF[/user-profiles]
+    subgraph Routes["Routes Layer /api/v1"]
+        R_USERS["users route"]
+        R_JOBS["jobs route"]
+        R_CO["companies route"]
+        R_UJ["userjobs route"]
+        R_RES["resumes route"]
+        R_AI["ai route"]
+        R_PROF["user-profiles route"]
     end
 
     subgraph Controllers[Controllers Layer]
@@ -305,8 +305,8 @@ flowchart TB
     end
 
     subgraph Docs[API Documentation]
-        SWAGGER[/api-docs Swagger UI]
-        REDOC[/docs ReDoc]
+        SWAGGER["api-docs Swagger UI"]
+        REDOC["docs ReDoc"]
     end
 
     APP --> Middleware
